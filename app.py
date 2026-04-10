@@ -27,7 +27,7 @@ def reiniciar():
     st.session_state.win = False
 
 
-# 🔹 FUNCION SEGURA PARA IMÁGENES
+# 🔹 MOSTRAR IMAGEN SEGURA
 def mostrar_imagen(path, size=50, fallback="⬜"):
     if os.path.exists(path):
         st.image(path, width=size)
@@ -35,12 +35,12 @@ def mostrar_imagen(path, size=50, fallback="⬜"):
         st.markdown(f"<div style='font-size:28px'>{fallback}</div>", unsafe_allow_html=True)
 
 
-# 🔹 MOVIMIENTOS CONTIGUOS
+# 🔹 MOVIMIENTO CONTIGUO
 def vecinos(pos):
-    opciones = []
-
     fila = pos // SIZE
     col = pos % SIZE
+
+    opciones = []
 
     if col > 0:
         opciones.append(pos - 1)
@@ -126,7 +126,7 @@ for fila in range(SIZE):
             else:
                 # ALTAR
                 if idx == TOTAL - 1:
-                    st.markdown("💒")
+                    mostrar_imagen("img/altar.png", 60, "💒")
 
                 # YASMINA
                 if hay_yasmina:
