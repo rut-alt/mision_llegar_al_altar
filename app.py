@@ -63,61 +63,1191 @@ st.set_page_config(layout="wide")
 st.title("💍 MISIÓN: LLEGAR AL ALTAR")
 
 # GRID HTML REAL
-grid_html = "<div style='display:grid; grid-template-columns: repeat(10, 1fr); gap:5px;'>"
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
 
-for i in range(TOTAL):
+</div>
 
-    contenido = ""
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
 
-    if i == TOTAL-1:
-        contenido = "💒"
-    elif i == st.session_state.yasmina:
-        contenido = "👰"
-    elif i in st.session_state.amigas:
-        contenido = "👯"
+</div>
 
-    grid_html += f"""
-    <div style='
-        border:2px solid #999;
-        height:60px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:24px;
-        border-radius:6px;
-    '>
-        {contenido}
-    </div>
-    """
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
 
-grid_html += "</div>"
+</div>
 
-st.markdown(grid_html, unsafe_allow_html=True)
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
 
-# MOVIMIENTO (elige casilla)
-st.markdown("### Mover a:")
+</div>
 
-opciones = []
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
 
-y = st.session_state.yasmina
-posibles = [y+1, y-1, y+SIZE, y-SIZE]
-posibles = [p for p in posibles if 0 <= p < TOTAL]
+</div>
 
-for p in posibles:
-    if st.button(f"Ir a {p}"):
-        mover_yasmina(p)
-        st.rerun()
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
 
-# GAME OVER
-if st.session_state.game_over:
-    st.error("💥 ¡UNA AMIGA TE HA PARADO! ¡NO TE CASES!")
-    if st.button("🔁 Reiniciar"):
-        reiniciar()
-        st.rerun()
+</div>
 
-# WIN
-if st.session_state.win:
-    st.success("💒 ¡HAS LLEGADO AL ALTAR!")
-    if st.button("🔁 Otra vez"):
-        reiniciar()
-        st.rerun()
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+    👯
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+    👯
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+    👯
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+    👯
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+    👯
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+    👯
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+
+</div>
+
+<div style='
+    border:2px solid #999;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    border-radius:6px;
+'>
+    💒
+</div>
+</div>
