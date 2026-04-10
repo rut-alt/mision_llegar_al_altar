@@ -17,6 +17,9 @@ AMIGAS = [
 ]
 
 # INIT
+if "evento" in st.session_state and st.session_state.evento:
+    if "img" not in st.session_state.evento:
+        st.session_state.evento = None
 if "yasmina" not in st.session_state:
     st.session_state.yasmina = 0
 
