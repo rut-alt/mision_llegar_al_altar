@@ -80,9 +80,12 @@ for i in range(NUM_CASILLAS + 1):
         st.image("img/yasmina.png.png", width=80)
 
     # AMIGAS
-    for idx, amiga in enumerate(AMIGAS):
-        if i == st.session_state.pos_amigas[idx]:
+for idx, amiga in enumerate(AMIGAS):
+    if i == st.session_state.pos_amigas[idx]:
+        try:
             st.image(amiga["img"], width=70)
+        except:
+            st.markdown(f"<div style='font-size:40px'>{amiga['nombre'][0]}</div>", unsafe_allow_html=True)
 
     st.markdown(f"<b>Casilla {i}</b>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
