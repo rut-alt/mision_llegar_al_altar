@@ -8,12 +8,12 @@ ALTAR = TOTAL - 1
 
 # AMIGAS (AHORA CON MENSAJE)
 AMIGAS = [
-    {"nombre": "Lorena", "msg": "💅 ¡Outfit urgente!"},
-    {"nombre": "Leslie", "msg": "🍷 He abierto vino..."},
-    {"nombre": "Rut", "msg": "😏 Sin mí no hay boda"},
-    {"nombre": "Marta", "msg": "🔥 Drama máximo"},
-    {"nombre": "Julia", "msg": "📞 Llámame YA"},
-    {"nombre": "Andrea", "msg": "🚗 Estoy perdida"},
+    {"nombre": "Lorena", "msg": "💅 ¡Outfit urgente!", "img": "img/lorena.png"},
+    {"nombre": "Leslie", "msg": "🍷 He abierto vino...", "img": "img/leslie.png"},
+    {"nombre": "Rut", "msg": "😏 Sin mí no hay boda", "img": "img/rut.png"},
+    {"nombre": "Marta", "msg": "🔥 Drama máximo", "img": "img/lorena.png"},
+    {"nombre": "Julia", "msg": "📞 Llámame YA", "img": "img/leslie.png"},
+    {"nombre": "Andrea", "msg": "🚗 Estoy perdida", "img": "img/rut.png"},
 ]
 
 # INIT
