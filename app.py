@@ -4,24 +4,13 @@ import random
 # CONFIG
 SIZE = 6
 TOTAL = SIZE * SIZE
-ALTAR = TOTAL - 1
-
-# AMIGAS
-AMIGAS = [
-    {"nombre": "Lorena", "emoji": "👩‍🦰", "msg": "¡Outfit urgente tía!"},
-    {"nombre": "Leslie", "emoji": "👱‍♀️", "msg": "He abierto vino... ven YA"},
-    {"nombre": "Rut", "emoji": "👩", "msg": "Sin mí no hay boda"},
-    {"nombre": "Marta", "emoji": "👩‍🦱", "msg": "Drama máximo ahora mismo"},
-    {"nombre": "Julia", "emoji": "👩‍🦳", "msg": "Te necesito YA"},
-    {"nombre": "Andrea", "emoji": "👧", "msg": "Estoy perdida 😭"},
-]
 
 # INIT
 if "yasmina" not in st.session_state:
     st.session_state.yasmina = 0
 
 if "amigas" not in st.session_state:
-    st.session_state.amigas = random.sample(range(1, TOTAL-1), len(AMIGAS))
+    st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
 
 if "game_over" not in st.session_state:
     st.session_state.game_over = False
@@ -29,19 +18,15 @@ if "game_over" not in st.session_state:
 if "win" not in st.session_state:
     st.session_state.win = False
 
-if "evento" not in st.session_state:
-    st.session_state.evento = None
-
 
 def reiniciar():
     st.session_state.yasmina = 0
-    st.session_state.amigas = random.sample(range(1, TOTAL-1), len(AMIGAS))
+    st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
     st.session_state.game_over = False
     st.session_state.win = False
-    st.session_state.evento = None
 
 
-# 🔹 vecinos contiguos
+# 🔹 MOVIMIENTOS
 def vecinos(pos):
     fila = pos // SIZE
     col = pos % SIZE
@@ -60,13 +45,13 @@ def vecinos(pos):
     return opciones
 
 
-# 🔹 mover amigas (aleatorio real + sin altar)
+# 🔹 MOVER AMIGAS
 def mover_amigas():
     nuevas = []
     ocupadas = set()
 
     for pos in st.session_state.amigas:
-        posibles = [p for p in vecinos(pos) if p != ALTAR]
+        posibles = vecinos(pos)
         random.shuffle(posibles)
 
         for p in posibles:
@@ -80,26 +65,16 @@ def mover_amigas():
     st.session_state.amigas = nuevas
 
 
-# 🔹 mover yasmina
+# 🔹 MOVER YASMINA
 def mover_yasmina(destino):
-
-    # mover yasmina
     st.session_state.yasmina = destino
-
-    # ganar directo
-    if destino == ALTAR:
-        st.session_state.win = True
-        return
-
-    # mover amigas después
     mover_amigas()
 
-    # comprobar colisión
-    for i, pos in enumerate(st.session_state.amigas):
-        if pos == destino:
-            st.session_state.game_over = True
-            st.session_state.evento = AMIGAS[i]
-            return
+    if destino in st.session_state.amigas:
+        st.session_state.game_over = True
+
+    if destino == TOTAL - 1:
+        st.session_state.win = True
 
 
 # UI
@@ -108,6 +83,16 @@ st.title("💍 MISIÓN: LLEGAR AL ALTAR")
 
 y = st.session_state.yasmina
 posibles = vecinos(y)
+
+# IMÁGENES
+imagenes_amigas = [
+    "img/lorena.png",
+    "img/leslie.png",
+    "img/rut.png",
+    "img/lorena.png",
+    "img/leslie.png",
+    "img/rut.png",
+]
 
 # GRID
 for fila in range(SIZE):
@@ -123,7 +108,7 @@ for fila in range(SIZE):
 
             es_clickable = idx in posibles and not st.session_state.game_over and not st.session_state.win
 
-            # 🎨 estilo
+            # 🎨 estilos
             color = "#ffffff"
             borde = "2px solid #ccc"
 
@@ -131,62 +116,55 @@ for fila in range(SIZE):
                 color = "#e8f7ff"
                 borde = "2px solid #00aaff"
 
-            if idx == ALTAR:
-                color = "#d4f5d4"
+            if idx == TOTAL - 1:
+                color = "#eaffea"
 
-            # contenido
-            if idx == ALTAR:
-                contenido = "💒"
-            elif hay_yasmina:
-                contenido = "👰"
-            elif amigas_en_casilla:
-                contenido = "".join([AMIGAS[i]["emoji"] for i in amigas_en_casilla])
-            else:
-                contenido = ""
-
+            # 🔲 CAJA VISUAL
             st.markdown(
                 f"""
                 <div style="
                     background:{color};
                     border:{borde};
                     height:80px;
-                    border-radius:12px;
+                    border-radius:10px;
                     display:flex;
                     align-items:center;
                     justify-content:center;
-                    font-size:30px;
                 ">
-                    {contenido}
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
-            # click
+            # 👇 CONTENIDO REAL (IMÁGENES)
+            if idx == TOTAL - 1:
+                st.image("img/altar.png", width=50)
+
+            if hay_yasmina:
+                st.image("img/yasmina.png", width=50)
+
+            for i in amigas_en_casilla:
+                img = imagenes_amigas[i % len(imagenes_amigas)]
+                st.image(img, width=40)
+
+            # 👇 CLICK
             if es_clickable:
                 if st.button("Mover", key=f"move_{idx}", use_container_width=True):
                     mover_yasmina(idx)
                     st.rerun()
 
 
-# 💥 GAME OVER
+# GAME OVER
 if st.session_state.game_over:
-    amiga = st.session_state.evento
-
-    st.markdown("---")
-    st.error(f"💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}")
-    st.markdown(f"### {amiga['emoji']} {amiga['msg']}")
-
-    if st.button("💔 Reiniciar"):
+    st.error("💥 ¡UNA AMIGA TE HA PARADO! ¡NO TE CASES!")
+    if st.button("🔁 Reiniciar"):
         reiniciar()
         st.rerun()
 
 
-# 🎉 WIN
+# WIN
 if st.session_state.win:
-    st.balloons()
     st.success("💒 ¡HAS LLEGADO AL ALTAR!")
-
     if st.button("🔁 Otra vez"):
         reiniciar()
         st.rerun()
