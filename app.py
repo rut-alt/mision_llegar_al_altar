@@ -1,6 +1,5 @@
 import streamlit as st
 import random
-import os
 
 # CONFIG
 SIZE = 6
@@ -27,15 +26,7 @@ def reiniciar():
     st.session_state.win = False
 
 
-# 🔹 MOSTRAR IMAGEN SEGURA
-def mostrar_imagen(path, size=50, fallback="⬜"):
-    if os.path.exists(path):
-        st.image(path, width=size)
-    else:
-        st.markdown(f"<div style='font-size:28px'>{fallback}</div>", unsafe_allow_html=True)
-
-
-# 🔹 MOVIMIENTO CONTIGUO
+# 🔹 MOVIMIENTOS CONTIGUOS
 def vecinos(pos):
     fila = pos // SIZE
     col = pos % SIZE
@@ -94,7 +85,7 @@ st.title("💍 MISIÓN: LLEGAR AL ALTAR")
 y = st.session_state.yasmina
 posibles = vecinos(y)
 
-# 📸 IMÁGENES AMIGAS
+# 📸 IMÁGENES
 imagenes_amigas = [
     "img/lorena.png",
     "img/leslie.png",
@@ -105,12 +96,10 @@ imagenes_amigas = [
 ]
 
 # GRID
-# GRID PRO
 for fila in range(SIZE):
     cols = st.columns(SIZE)
 
     for col in range(SIZE):
-
         idx = fila * SIZE + col
 
         with cols[col]:
@@ -118,59 +107,58 @@ for fila in range(SIZE):
             hay_yasmina = idx == st.session_state.yasmina
             amigas_en_casilla = [i for i, pos in enumerate(st.session_state.amigas) if pos == idx]
 
-            # 🎨 ESTILO CASILLA
             es_clickable = idx in posibles and not st.session_state.game_over and not st.session_state.win
 
+            # 🎨 estilos
             color = "#ffffff"
             borde = "2px solid #ccc"
 
             if es_clickable:
-                color = "#e8f7ff"   # azul claro clickable
+                color = "#e8f7ff"
                 borde = "2px solid #00aaff"
 
             if idx == TOTAL - 1:
-                color = "#eaffea"   # altar verde
+                color = "#eaffea"
 
-            # 📦 CONTENIDO HTML
+            # 👇 BOTÓN COMO CASILLA (clave)
+            if es_clickable:
+                if st.button(" ", key=f"cell_{idx}", use_container_width=True):
+                    mover_yasmina(idx)
+                    st.rerun()
+
+            # 🧩 CONTENIDO VISUAL
             contenido = ""
 
             if idx == TOTAL - 1:
-                contenido += "<div style='font-size:24px'>💒</div>"
+                contenido += "💒"
 
             if hay_yasmina:
-                contenido += "<img src='img/yasmina.png' width='40'>"
+                contenido += "<br><img src='img/yasmina.png' width='45'>"
 
             for i in amigas_en_casilla:
                 img = imagenes_amigas[i % len(imagenes_amigas)]
-                contenido += f"<img src='{img}' width='35'>"
+                contenido += f"<br><img src='{img}' width='40'>"
 
-            if not hay_yasmina and not amigas_en_casilla and idx != TOTAL - 1:
-                contenido += "⬜"
-
-            # 🟦 CASILLA VISUAL
+            # 🟦 CASILLA
             st.markdown(
                 f"""
                 <div style="
                     background:{color};
                     border:{borde};
-                    height:70px;
+                    height:75px;
+                    margin-top:-70px;
                     display:flex;
                     flex-direction:column;
                     align-items:center;
                     justify-content:center;
-                    border-radius:10px;
+                    border-radius:12px;
+                    font-size:20px;
                 ">
                     {contenido}
                 </div>
                 """,
                 unsafe_allow_html=True
             )
-
-            # 👇 CLICK ENCIMA
-            if es_clickable:
-                if st.button(" ", key=f"click_{idx}", use_container_width=True):
-                    mover_yasmina(idx)
-                    st.rerun()
 
 
 # GAME OVER
