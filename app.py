@@ -6,12 +6,12 @@ import time
 NUM_CASILLAS = 14
 
 AMIGAS = [
-    {"nombre": "Marta", "mensaje": "🚨 ¡NO TE CASES!", "img": "img/marta.png"},
-    {"nombre": "Lorena", "mensaje": "💅 Outfit urgente", "img": "img/lorena.png"},
-    {"nombre": "Leslie", "mensaje": "🍷 Vino abierto", "img": "img/leslie.png"},
-    {"nombre": "Julia", "mensaje": "📞 Drama YA", "img": "img/julia.png"},
-    {"nombre": "Andrea", "mensaje": "🚗 Estoy perdida", "img": "img/andrea.png"},
-    {"nombre": "Rut", "mensaje": "😏 Sin mí no hay boda", "img": "img/rut.png"},
+    {"nombre": "Marta", "mensaje": "🚨 ¡NO TE CASES!", "img": "img/leslie.png.png"},
+    {"nombre": "Lorena", "mensaje": "💅 Outfit urgente", "img": "img/lorena.png.png"},
+    {"nombre": "Leslie", "mensaje": "🍷 Vino abierto", "img": "img/leslie.png.png"},
+    {"nombre": "Julia", "mensaje": "📞 Drama YA", "img": "img/lorena.png.png"},
+    {"nombre": "Andrea", "mensaje": "🚗 Estoy perdida", "img": "img/leslie.png.png"},
+    {"nombre": "Rut", "mensaje": "😏 Sin mí no hay boda", "img": "leslie.png.png"},
 ]
 
 # INIT
