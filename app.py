@@ -9,9 +9,9 @@ AMIGAS = [
     {"nombre": "Marta", "mensaje": "🚨 ¡NO TE CASES! ¡Los gatos llevan 3 días mirándome raro!", "img": "img/marta.png"},
     {"nombre": "Lorena", "mensaje": "💅 Tía necesito outfit urgente, ¡esto es más importante que tu boda!", "img": "img/lorena.png"},
     {"nombre": "Leslie", "mensaje": "🍷 He abierto vino… no puedes dejarme sola con esto", "img": "img/leslie.png"},
-    {"nombre": "Julia", "mensaje": "📞 Drama máximo. Llámame YA o me caso yo antes", "img": "img/julia.png"},
-    {"nombre": "Andrea", "mensaje": "🚗 Estoy perdida… otra vez… ven a rescatarme 😭", "img": "img/andrea.png"},
-    {"nombre": "Rut", "mensaje": "😏 Sabes que sin mí no hay boda que valga", "img": "img/rut.png"},
+    {"nombre": "Julia", "mensaje": "📞 Drama máximo. Llámame YA o me caso yo antes", "img": "img/lorena.png"},
+    {"nombre": "Andrea", "mensaje": "🚗 Estoy perdida… otra vez… ven a rescatarme 😭", "img": "img/yasmina.png"},
+    {"nombre": "Rut", "mensaje": "😏 Sabes que sin mí no hay boda que valga", "img": "img/yasmina.png"},
 ]
 
 # INIT STATE
