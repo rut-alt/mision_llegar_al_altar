@@ -60,45 +60,39 @@ def tirar_dado():
 # UI
 st.set_page_config(page_title="Boda Yasmina 💍", layout="centered")
 
-st.markdown("<h1 style='text-align:center;'>💍 MISIÓN: LLEGAR AL ALTAR</h1>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align:center;'>💍 MISIÓN: LLEGAR AL ALTAR</h2>", unsafe_allow_html=True)
+st.markdown(f"<h4 style='text-align:center;'>🎲 Dado: {st.session_state.dado}</h4>", unsafe_allow_html=True)
 
-st.markdown(f"<h3 style='text-align:center;'>🎲 Dado: {st.session_state.dado}</h3>", unsafe_allow_html=True)
-
-# TABLERO VISUAL PRO
-cols = st.columns(NUM_CASILLAS + 1)
-
+# TABLERO VERTICAL (MÓVIL)
 for i in range(NUM_CASILLAS + 1):
-    with cols[i]:
-        st.markdown(
-            f"<div style='border:2px solid #ccc; border-radius:10px; padding:10px; text-align:center;'>",
-            unsafe_allow_html=True
-        )
 
-        # ALTAR
-        if i == NUM_CASILLAS:
-            st.markdown("💒")
+    st.markdown(
+        "<div style='border:2px solid #ddd; border-radius:12px; padding:12px; margin:6px 0; text-align:center;'>",
+        unsafe_allow_html=True
+    )
 
-        # YASMINA
-        if i == st.session_state.pos_yasmina:
-            st.image("img/yasmina.png", width=50)
+    # ALTAR
+    if i == NUM_CASILLAS:
+        st.markdown("💒 ALTAR")
 
-        # AMIGAS
-        for idx, amiga in enumerate(AMIGAS):
-            if i == st.session_state.pos_amigas[idx]:
-                st.image(amiga["img"], width=40)
+    # YASMINA
+    if i == st.session_state.pos_yasmina:
+        st.image("img/yasmina.png", width=80)
 
-        st.markdown(f"<small>{i}</small>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+    # AMIGAS
+    for idx, amiga in enumerate(AMIGAS):
+        if i == st.session_state.pos_amigas[idx]:
+            st.image(amiga["img"], width=70)
+
+    st.markdown(f"<b>Casilla {i}</b>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
-# BOTÓN
-st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
-
+# BOTÓN GRANDE (MÓVIL)
 if not st.session_state.game_over and not st.session_state.win:
-    if st.button("🎲 Tirar dado"):
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("🎲 TIRAR DADO", use_container_width=True):
         tirar_dado()
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 
 # GAME OVER
@@ -106,9 +100,9 @@ if st.session_state.game_over:
     amiga = st.session_state.evento
 
     st.error(f"💥 {amiga['nombre']}: {amiga['mensaje']}")
-    st.image(amiga["img"], width=200)
+    st.image(amiga["img"], width=250)
 
-    if st.button("💔 Reintentar"):
+    if st.button("💔 REINTENTAR", use_container_width=True):
         reiniciar()
 
 
@@ -117,7 +111,7 @@ if st.session_state.win:
     st.balloons()
     st.success("💒 ¡SE HA CASADO!")
 
-    st.image("img/yasmina.png", width=200)
+    st.image("img/yasmina.png", width=250)
 
-    if st.button("🔁 Otra vez"):
+    if st.button("🔁 OTRA VEZ", use_container_width=True):
         reiniciar()
