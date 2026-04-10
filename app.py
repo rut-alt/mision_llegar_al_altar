@@ -6,14 +6,14 @@ SIZE = 6
 TOTAL = SIZE * SIZE
 ALTAR = TOTAL - 1
 
-# AMIGAS (emoji + frase)
+# AMIGAS
 AMIGAS = [
-    {"nombre": "Lorena", "emoji": "💅", "msg": "¡Outfit urgente tía!"},
-    {"nombre": "Leslie", "emoji": "🍷", "msg": "He abierto vino... ven YA"},
-    {"nombre": "Rut", "emoji": "😏", "msg": "Sin mí no hay boda"},
-    {"nombre": "Lorena", "emoji": "💅", "msg": "Cambio de look ahora mismo"},
-    {"nombre": "Leslie", "emoji": "🍷", "msg": "No puedes dejarme sola con esto"},
-    {"nombre": "Rut", "emoji": "😏", "msg": "Te estoy esperando 😈"},
+    {"nombre": "Lorena", "emoji": "👩‍🦰", "msg": "¡Outfit urgente tía!"},
+    {"nombre": "Leslie", "emoji": "👱‍♀️", "msg": "He abierto vino... ven YA"},
+    {"nombre": "Rut", "emoji": "👩", "msg": "Sin mí no hay boda"},
+    {"nombre": "Marta", "emoji": "👩‍🦱", "msg": "Drama máximo ahora mismo"},
+    {"nombre": "Julia", "emoji": "👩‍🦳", "msg": "Te necesito YA"},
+    {"nombre": "Andrea", "emoji": "👧", "msg": "Estoy perdida 😭"},
 ]
 
 # INIT
@@ -60,7 +60,7 @@ def vecinos(pos):
     return opciones
 
 
-# 🔹 mover amigas (NO altar)
+# 🔹 mover amigas (aleatorio real + sin altar)
 def mover_amigas():
     nuevas = []
     ocupadas = set()
@@ -82,14 +82,19 @@ def mover_amigas():
 
 # 🔹 mover yasmina
 def mover_yasmina(destino):
+
+    # mover yasmina
     st.session_state.yasmina = destino
 
+    # ganar directo
     if destino == ALTAR:
         st.session_state.win = True
         return
 
+    # mover amigas después
     mover_amigas()
 
+    # comprobar colisión
     for i, pos in enumerate(st.session_state.amigas):
         if pos == destino:
             st.session_state.game_over = True
@@ -118,7 +123,7 @@ for fila in range(SIZE):
 
             es_clickable = idx in posibles and not st.session_state.game_over and not st.session_state.win
 
-            # 🎨 estilos
+            # 🎨 estilo
             color = "#ffffff"
             borde = "2px solid #ccc"
 
@@ -130,8 +135,6 @@ for fila in range(SIZE):
                 color = "#d4f5d4"
 
             # contenido
-            contenido = ""
-
             if idx == ALTAR:
                 contenido = "💒"
             elif hay_yasmina:
@@ -141,7 +144,6 @@ for fila in range(SIZE):
             else:
                 contenido = ""
 
-            # casilla
             st.markdown(
                 f"""
                 <div style="
@@ -152,7 +154,7 @@ for fila in range(SIZE):
                     display:flex;
                     align-items:center;
                     justify-content:center;
-                    font-size:28px;
+                    font-size:30px;
                 ">
                     {contenido}
                 </div>
@@ -167,21 +169,18 @@ for fila in range(SIZE):
                     st.rerun()
 
 
-# 💥 POPUP GAME OVER
-# 💥 POPUP GAME OVER
+# 💥 GAME OVER
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
-    if amiga is not None:
-        st.error(f"💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}")
-        st.markdown(f"### {amiga['emoji']} {amiga['msg']}")
-    else:
-        st.error("💥 ¡TE HAN PILLADO! ¡NO TE CASES!")
+    st.markdown("---")
+    st.error(f"💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}")
+    st.markdown(f"### {amiga['emoji']} {amiga['msg']}")
 
-    # 🔥 BOTÓN AQUÍ (clave)
     if st.button("💔 Reiniciar"):
         reiniciar()
         st.rerun()
+
 
 # 🎉 WIN
 if st.session_state.win:
