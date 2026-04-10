@@ -105,6 +105,7 @@ imagenes_amigas = [
 ]
 
 # GRID
+# GRID PRO
 for fila in range(SIZE):
     cols = st.columns(SIZE)
 
@@ -117,29 +118,59 @@ for fila in range(SIZE):
             hay_yasmina = idx == st.session_state.yasmina
             amigas_en_casilla = [i for i, pos in enumerate(st.session_state.amigas) if pos == idx]
 
-            # CLICKABLE
-            if idx in posibles and not st.session_state.game_over and not st.session_state.win:
-                if st.button("⬜", key=f"cell_{idx}", use_container_width=True):
+            # 🎨 ESTILO CASILLA
+            es_clickable = idx in posibles and not st.session_state.game_over and not st.session_state.win
+
+            color = "#ffffff"
+            borde = "2px solid #ccc"
+
+            if es_clickable:
+                color = "#e8f7ff"   # azul claro clickable
+                borde = "2px solid #00aaff"
+
+            if idx == TOTAL - 1:
+                color = "#eaffea"   # altar verde
+
+            # 📦 CONTENIDO HTML
+            contenido = ""
+
+            if idx == TOTAL - 1:
+                contenido += "<div style='font-size:24px'>💒</div>"
+
+            if hay_yasmina:
+                contenido += "<img src='img/yasmina.png' width='40'>"
+
+            for i in amigas_en_casilla:
+                img = imagenes_amigas[i % len(imagenes_amigas)]
+                contenido += f"<img src='{img}' width='35'>"
+
+            if not hay_yasmina and not amigas_en_casilla and idx != TOTAL - 1:
+                contenido += "⬜"
+
+            # 🟦 CASILLA VISUAL
+            st.markdown(
+                f"""
+                <div style="
+                    background:{color};
+                    border:{borde};
+                    height:70px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    border-radius:10px;
+                ">
+                    {contenido}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            # 👇 CLICK ENCIMA
+            if es_clickable:
+                if st.button(" ", key=f"click_{idx}", use_container_width=True):
                     mover_yasmina(idx)
                     st.rerun()
-
-            else:
-                # ALTAR
-                if idx == TOTAL - 1:
-                    mostrar_imagen("img/altar.png", 60, "💒")
-
-                # YASMINA
-                if hay_yasmina:
-                    mostrar_imagen("img/yasmina.png", 60, "👰")
-
-                # AMIGAS
-                for i in amigas_en_casilla:
-                    img = imagenes_amigas[i % len(imagenes_amigas)]
-                    mostrar_imagen(img, 50, "👯")
-
-                # VACÍA
-                if not hay_yasmina and not amigas_en_casilla and idx != TOTAL - 1:
-                    st.markdown("⬜")
 
 
 # GAME OVER
