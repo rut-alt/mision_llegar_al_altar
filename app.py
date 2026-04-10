@@ -172,16 +172,50 @@ for fila in range(SIZE):
 
 
 # 💥 GAME OVER (AHORA PERSONALIZADO)
+# 💥 POPUP MODAL GAME OVER
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
     if amiga:
-        st.error(f"💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}")
-        st.markdown(f"### {amiga['msg']}")
-    else:
-        st.error("💥 ¡TE HAN PILLADO!")
+        st.markdown(
+            f"""
+            <style>
+            .overlay {{
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+            }}
+            .modal {{
+                background: white;
+                padding: 30px;
+                border-radius: 20px;
+                text-align: center;
+                max-width: 300px;
+            }}
+            </style>
 
-    if st.button("🔁 Reiniciar"):
+            <div class="overlay">
+                <div class="modal">
+                    <h2>💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}</h2>
+                    <img src="{amiga['img']}" width="120">
+                    <p style="font-size:18px;">{amiga['msg']}</p>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    # botón fuera del modal (Streamlit limitation)
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
+
+    if st.button("💔 Cerrar y reiniciar", use_container_width=True):
         reiniciar()
         st.rerun()
 
