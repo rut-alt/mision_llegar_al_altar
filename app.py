@@ -47,7 +47,6 @@ def vecinos(pos):
     col = pos % SIZE
 
     opciones = []
-
     if col > 0:
         opciones.append(pos - 1)
     if col < SIZE - 1:
@@ -112,7 +111,6 @@ for fila in range(SIZE):
         idx = fila * SIZE + col
 
         with cols[col]:
-
             hay_yasmina = idx == st.session_state.yasmina
             amigas_en_casilla = [i for i, pos in enumerate(st.session_state.amigas) if pos == idx]
 
@@ -161,67 +159,19 @@ for fila in range(SIZE):
                     st.rerun()
 
 
-# 💥 POPUP MODAL
-# 💥 POPUP MODAL
+# 💥 MODAL REAL (ESTO ES LO IMPORTANTE)
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
-    if amiga:
-        img_html = f"<img src='{amiga['img']}' width='120'>" if amiga.get("img") else ""
+    with st.modal("💥 ¡NO TE CASES!"):
+        st.markdown(f"## Has coincidido con **{amiga['nombre']}**")
+        st.image(amiga["img"], width=150)
+        st.markdown(f"### {amiga['msg']}")
 
-        st.markdown(
-            f"""
-            <style>
-            .overlay {{
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.6);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 9999;
-                pointer-events: none;
-            }}
-            .modal {{
-                position: relative;
-                background: white;
-                padding: 30px;
-                border-radius: 20px;
-                text-align: center;
-                max-width: 300px;
-                pointer-events: auto;
-            }}
-            .close {{
-                position: absolute;
-                top: 10px;
-                right: 15px;
-                font-size: 22px;
-                font-weight: bold;
-            }}
-            </style>
-
-            <div class="overlay">
-                <div class="modal">
-                    <div class="close">❌</div>
-                    <h2>💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}</h2>
-                    {img_html}
-                    <p style="font-size:18px;">{amiga['msg']}</p>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    # BOTÓN REAL
-    col1, col2, col3 = st.columns([3,1,3])
-
-    with col2:
-        if st.button("❌", key="close_modal"):
+        if st.button("💔 Cerrar y reiniciar"):
             reiniciar()
             st.rerun()
+
 
 # WIN
 if st.session_state.win:
