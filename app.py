@@ -168,6 +168,7 @@ for fila in range(SIZE):
 
 
 # 💥 POPUP GAME OVER
+# 💥 POPUP GAME OVER
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
@@ -177,6 +178,10 @@ if st.session_state.game_over:
     else:
         st.error("💥 ¡TE HAN PILLADO! ¡NO TE CASES!")
 
+    # 🔥 BOTÓN AQUÍ (clave)
+    if st.button("💔 Reiniciar"):
+        reiniciar()
+        st.rerun()
 
 # 🎉 WIN
 if st.session_state.win:
