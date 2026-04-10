@@ -2,15 +2,15 @@ import streamlit as st
 import random
 
 # CONFIG
-SIZE = 10
+SIZE = 6
 TOTAL = SIZE * SIZE
 
-# INIT ESTABLE
+# INIT
 if "yasmina" not in st.session_state:
     st.session_state.yasmina = 0
 
 if "amigas" not in st.session_state:
-    st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
+    st.session_state.amigas = random.sample(range(1, TOTAL-1), 5)
 
 if "game_over" not in st.session_state:
     st.session_state.game_over = False
@@ -21,7 +21,7 @@ if "win" not in st.session_state:
 
 def reiniciar():
     st.session_state.yasmina = 0
-    st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
+    st.session_state.amigas = random.sample(range(1, TOTAL-1), 5)
     st.session_state.game_over = False
     st.session_state.win = False
 
@@ -60,48 +60,38 @@ def mover_yasmina(destino):
 
 
 # UI
-st.set_page_config(layout="wide")
+st.set_page_config(layout="centered")
 st.title("💍 MISIÓN: LLEGAR AL ALTAR")
-
-# GRID REAL
-grid_html = "<div style=\"display:grid; grid-template-columns: repeat(10, 1fr); gap:5px;\">"
-
-for i in range(TOTAL):
-
-    contenido = ""
-
-    if i == TOTAL - 1:
-        contenido = "💒"
-    elif i == st.session_state.yasmina:
-        contenido = "👰"
-    elif i in st.session_state.amigas:
-        contenido = "👯"
-
-    grid_html += f"""
-    <div style=\"border:2px solid #999; height:60px; display:flex; align-items:center; justify-content:center; font-size:24px; border-radius:6px;\">
-        {contenido}
-    </div>
-    """
-
-grid_html += "</div>"
-
-st.markdown(grid_html, unsafe_allow_html=True)
-
-
-# MOVIMIENTO
-st.markdown("### Movimiento")
 
 y = st.session_state.yasmina
 posibles = [y+1, y-1, y+SIZE, y-SIZE]
 posibles = [p for p in posibles if 0 <= p < TOTAL]
 
-cols = st.columns(len(posibles))
+# GRID REAL CON BOTONES
+for fila in range(SIZE):
+    cols = st.columns(SIZE)
 
-for i, p in enumerate(posibles):
-    with cols[i]:
-        if st.button(f"Ir a {p}", use_container_width=True):
-            mover_yasmina(p)
-            st.rerun()
+    for col in range(SIZE):
+        idx = fila * SIZE + col
+
+        with cols[col]:
+
+            contenido = ""
+
+            if idx == TOTAL - 1:
+                contenido = "💒"
+            elif idx == st.session_state.yasmina:
+                contenido = "👰"
+            elif idx in st.session_state.amigas:
+                contenido = "👯"
+
+            # CLICKABLE
+            if idx in posibles and not st.session_state.game_over and not st.session_state.win:
+                if st.button(contenido or "⬜", key=f"cell_{idx}"):
+                    mover_yasmina(idx)
+                    st.rerun()
+            else:
+                st.markdown(f"<div style='text-align:center; font-size:24px'>{contenido or '⬜'}</div>", unsafe_allow_html=True)
 
 
 # GAME OVER
