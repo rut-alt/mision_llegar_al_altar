@@ -4,6 +4,7 @@ import random
 # CONFIG
 SIZE = 6
 TOTAL = SIZE * SIZE
+ALTAR = TOTAL - 1
 
 # INIT
 if "yasmina" not in st.session_state:
@@ -26,11 +27,10 @@ def reiniciar():
     st.session_state.win = False
 
 
-# 🔹 MOVIMIENTOS
+# 🔹 vecinos contiguos
 def vecinos(pos):
     fila = pos // SIZE
     col = pos % SIZE
-
     opciones = []
 
     if col > 0:
@@ -45,13 +45,15 @@ def vecinos(pos):
     return opciones
 
 
-# 🔹 MOVER AMIGAS
+# 🔹 mover amigas (SIN entrar en altar)
 def mover_amigas():
     nuevas = []
     ocupadas = set()
 
     for pos in st.session_state.amigas:
         posibles = vecinos(pos)
+        posibles = [p for p in posibles if p != ALTAR]  # 🔥 clave
+
         random.shuffle(posibles)
 
         for p in posibles:
@@ -65,16 +67,19 @@ def mover_amigas():
     st.session_state.amigas = nuevas
 
 
-# 🔹 MOVER YASMINA
+# 🔹 mover yasmina
 def mover_yasmina(destino):
     st.session_state.yasmina = destino
+
+    # ganar primero
+    if destino == ALTAR:
+        st.session_state.win = True
+        return
+
     mover_amigas()
 
     if destino in st.session_state.amigas:
         st.session_state.game_over = True
-
-    if destino == TOTAL - 1:
-        st.session_state.win = True
 
 
 # UI
@@ -84,7 +89,7 @@ st.title("💍 MISIÓN: LLEGAR AL ALTAR")
 y = st.session_state.yasmina
 posibles = vecinos(y)
 
-# IMÁGENES
+# imágenes amigas
 imagenes_amigas = [
     "img/lorena.png",
     "img/leslie.png",
@@ -94,8 +99,7 @@ imagenes_amigas = [
     "img/rut.png",
 ]
 
-# GRID
-# GRID REAL FUNCIONAL (IMÁGENES DENTRO)
+# GRID REAL
 for fila in range(SIZE):
     cols = st.columns(SIZE)
 
@@ -109,53 +113,51 @@ for fila in range(SIZE):
 
             es_clickable = idx in posibles and not st.session_state.game_over and not st.session_state.win
 
-            # 🎨 estilo visual
+            # 🎨 estilo
             color = "#ffffff"
-            borde = "2px solid #ccc"
-
             if es_clickable:
                 color = "#e8f7ff"
-                borde = "2px solid #00aaff"
+            if idx == ALTAR:
+                color = "#d4f5d4"
 
-            if idx == TOTAL - 1:
-                color = "#eaffea"
+            # 🟦 CAJA
+            box = st.container()
 
-            # 🟦 CAJA VISUAL
-            st.markdown(
-                f"""
-                <div style="
-                    background:{color};
-                    border:{borde};
-                    height:90px;
-                    border-radius:12px;
-                    display:flex;
-                    flex-direction:column;
-                    align-items:center;
-                    justify-content:center;
-                ">
-                """,
-                unsafe_allow_html=True
-            )
+            with box:
+                st.markdown(
+                    f"""
+                    <div style="
+                        background:{color};
+                        border:2px solid #ccc;
+                        height:90px;
+                        border-radius:12px;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                    ">
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-            # 👇 CONTENIDO (AHORA SÍ DENTRO)
-            if idx == TOTAL - 1:
-                st.image("img/altar.png", width=40)
+                # 👇 CONTENIDO (AHORA BIEN)
+                if idx == ALTAR:
+                    st.image("img/altar.png", width=45)
 
-            if hay_yasmina:
-                st.image("img/yasmina.png", width=40)
+                elif hay_yasmina:
+                    st.image("img/yasmina.png", width=45)
 
-            for i in amigas_en_casilla:
-                img = imagenes_amigas[i % len(imagenes_amigas)]
-                st.image(img, width=35)
-
-            # cerrar div
-            st.markdown("</div>", unsafe_allow_html=True)
+                else:
+                    for i in amigas_en_casilla:
+                        st.image(imagenes_amigas[i], width=40)
 
             # 👇 CLICK
             if es_clickable:
                 if st.button("Mover", key=f"move_{idx}", use_container_width=True):
                     mover_yasmina(idx)
                     st.rerun()
+
+
 # GAME OVER
 if st.session_state.game_over:
     st.error("💥 ¡UNA AMIGA TE HA PARADO! ¡NO TE CASES!")
