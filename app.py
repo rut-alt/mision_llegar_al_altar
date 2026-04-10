@@ -6,12 +6,17 @@ SIZE = 10
 TOTAL = SIZE * SIZE
 
 # INIT
-if "init" not in st.session_state:
+if "yasmina" not in st.session_state:
     st.session_state.yasmina = 0
+
+if "amigas" not in st.session_state:
     st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
+
+if "game_over" not in st.session_state:
     st.session_state.game_over = False
+
+if "win" not in st.session_state:
     st.session_state.win = False
-    st.session_state.init = True
 
 def reiniciar():
     st.session_state.yasmina = 0
