@@ -3,7 +3,9 @@ import random
 import time
 
 # CONFIG
-NUM_CASILLAS = 14
+FILAS = 4
+COLUMNAS = 4
+TOTAL = FILAS * COLUMNAS
 
 AMIGAS = [
     {"nombre": "Marta", "mensaje": "🚨 ¡NO TE CASES!", "img": "img/leslie.png.png"},
@@ -11,13 +13,13 @@ AMIGAS = [
     {"nombre": "Leslie", "mensaje": "🍷 Vino abierto", "img": "img/leslie.png.png"},
     {"nombre": "Julia", "mensaje": "📞 Drama YA", "img": "img/lorena.png.png"},
     {"nombre": "Andrea", "mensaje": "🚗 Estoy perdida", "img": "img/leslie.png.png"},
-    {"nombre": "Rut", "mensaje": "😏 Sin mí no hay boda", "img": "leslie.png.png"},
+    {"nombre": "Rut", "mensaje": "😏 Sin mí no hay boda", "img": "img/leslie.png.png"},
 ]
 
 # INIT
 if "init" not in st.session_state:
     st.session_state.pos_yasmina = 0
-    st.session_state.pos_amigas = [random.randint(2, NUM_CASILLAS-2) for _ in AMIGAS]
+    st.session_state.pos_amigas = [random.randint(1, TOTAL-2) for _ in AMIGAS]
     st.session_state.game_over = False
     st.session_state.win = False
     st.session_state.evento = None
@@ -26,7 +28,7 @@ if "init" not in st.session_state:
 
 def reiniciar():
     st.session_state.pos_yasmina = 0
-    st.session_state.pos_amigas = [random.randint(2, NUM_CASILLAS-2) for _ in AMIGAS]
+    st.session_state.pos_amigas = [random.randint(1, TOTAL-2) for _ in AMIGAS]
     st.session_state.game_over = False
     st.session_state.win = False
     st.session_state.evento = None
@@ -37,84 +39,93 @@ def tirar_dado():
         st.session_state.dado = random.randint(1, 3)
         time.sleep(0.1)
 
-    paso = st.session_state.dado
-    st.session_state.pos_yasmina += paso
+    # mover yasmina
+    st.session_state.pos_yasmina += st.session_state.dado
 
+    # mover amigas RANDOM 1 paso
     nuevas = []
     for pos in st.session_state.pos_amigas:
-        mov = random.choice([-1, 0, 1])
-        nuevas.append(max(1, min(NUM_CASILLAS-1, pos + mov)))
+        mov = random.choice([-1, 1])
+        nuevas.append(max(0, min(TOTAL-1, pos + mov)))
 
     st.session_state.pos_amigas = nuevas
 
+    # choque
     for i, pos in enumerate(nuevas):
         if pos == st.session_state.pos_yasmina:
             st.session_state.game_over = True
             st.session_state.evento = AMIGAS[i]
             return
 
-    if st.session_state.pos_yasmina >= NUM_CASILLAS:
+    # victoria
+    if st.session_state.pos_yasmina >= TOTAL-1:
         st.session_state.win = True
 
 
 # UI
-st.set_page_config(page_title="Boda Yasmina 💍", layout="centered")
+st.set_page_config(page_title="Boda 💍", layout="centered")
 
-st.markdown("<h2 style='text-align:center;'>💍 MISIÓN: LLEGAR AL ALTAR</h2>", unsafe_allow_html=True)
-st.markdown(f"<h4 style='text-align:center;'>🎲 Dado: {st.session_state.dado}</h4>", unsafe_allow_html=True)
+st.title("💍 MISIÓN: LLEGAR AL ALTAR")
+st.markdown(f"🎲 Dado: **{st.session_state.dado}**")
 
-# TABLERO VERTICAL (MÓVIL)
-for i in range(NUM_CASILLAS + 1):
+# GRID
+for fila in range(FILAS):
+    cols = st.columns(COLUMNAS)
 
-    st.markdown(
-        "<div style='border:2px solid #ddd; border-radius:12px; padding:12px; margin:6px 0; text-align:center;'>",
-        unsafe_allow_html=True
-    )
+    for col in range(COLUMNAS):
+        idx = fila * COLUMNAS + col
 
-    # ALTAR
-    if i == NUM_CASILLAS:
-        st.markdown("💒 ALTAR")
+        with cols[col]:
+            st.markdown(
+                "<div style='border:2px solid #ccc; border-radius:10px; padding:10px; text-align:center;'>",
+                unsafe_allow_html=True
+            )
 
-    # YASMINA
-    if i == st.session_state.pos_yasmina:
-        st.image("img/yasmina.png.png", width=80)
+            # ALTAR
+            if idx == TOTAL-1:
+                st.markdown("💒")
 
-    # AMIGAS
-for idx, amiga in enumerate(AMIGAS):
-    if i == st.session_state.pos_amigas[idx]:
-        try:
-            st.image(amiga["img"], width=70)
-        except:
-            st.markdown(f"<div style='font-size:40px'>{amiga['nombre'][0]}</div>", unsafe_allow_html=True)
+            # YASMINA
+            if idx == st.session_state.pos_yasmina:
+                try:
+                    st.image("img/yasmina.png", width=60)
+                except:
+                    st.markdown("👰")
 
-    st.markdown(f"<b>Casilla {i}</b>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+            # AMIGAS
+            for i, amiga in enumerate(AMIGAS):
+                if idx == st.session_state.pos_amigas[i]:
+                    try:
+                        st.image(amiga["img"], width=50)
+                    except:
+                        st.markdown("👯‍♀️")
+
+            st.markdown(f"<small>{idx}</small>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
 
 
-# BOTÓN GRANDE (MÓVIL)
+# BOTÓN
 if not st.session_state.game_over and not st.session_state.win:
-    st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🎲 TIRAR DADO", use_container_width=True):
+    if st.button("🎲 Tirar dado", use_container_width=True):
         tirar_dado()
-
 
 # GAME OVER
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
     st.error(f"💥 {amiga['nombre']}: {amiga['mensaje']}")
-    st.image(amiga["img"], width=250)
+    try:
+        st.image(amiga["img"], width=200)
+    except:
+        st.markdown("💀")
 
-    if st.button("💔 REINTENTAR", use_container_width=True):
+    if st.button("💔 Reintentar", use_container_width=True):
         reiniciar()
-
 
 # WIN
 if st.session_state.win:
     st.balloons()
     st.success("💒 ¡SE HA CASADO!")
 
-    st.image("img/yasmina.png.png", width=250)
-
-    if st.button("🔁 OTRA VEZ", use_container_width=True):
+    if st.button("🔁 Otra vez", use_container_width=True):
         reiniciar()
