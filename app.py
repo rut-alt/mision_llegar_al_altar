@@ -171,14 +171,11 @@ for fila in range(SIZE):
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
-    st.markdown("---")
-    st.error(f"💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}")
-
-    st.markdown(f"### {amiga['emoji']} {amiga['msg']}")
-
-    if st.button("💔 Reiniciar"):
-        reiniciar()
-        st.rerun()
+    if amiga is not None:
+        st.error(f"💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}")
+        st.markdown(f"### {amiga['emoji']} {amiga['msg']}")
+    else:
+        st.error("💥 ¡TE HAN PILLADO! ¡NO TE CASES!")
 
 
 # 🎉 WIN
