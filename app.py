@@ -4,6 +4,17 @@ import random
 # CONFIG
 SIZE = 6
 TOTAL = SIZE * SIZE
+ALTAR = TOTAL - 1
+
+# AMIGAS (AHORA CON MENSAJE)
+AMIGAS = [
+    {"nombre": "Lorena", "msg": "💅 ¡Outfit urgente!"},
+    {"nombre": "Leslie", "msg": "🍷 He abierto vino..."},
+    {"nombre": "Rut", "msg": "😏 Sin mí no hay boda"},
+    {"nombre": "Marta", "msg": "🔥 Drama máximo"},
+    {"nombre": "Julia", "msg": "📞 Llámame YA"},
+    {"nombre": "Andrea", "msg": "🚗 Estoy perdida"},
+]
 
 # INIT
 if "yasmina" not in st.session_state:
@@ -18,15 +29,20 @@ if "game_over" not in st.session_state:
 if "win" not in st.session_state:
     st.session_state.win = False
 
+# 🔥 NUEVO
+if "evento" not in st.session_state:
+    st.session_state.evento = None
+
 
 def reiniciar():
     st.session_state.yasmina = 0
     st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
     st.session_state.game_over = False
     st.session_state.win = False
+    st.session_state.evento = None
 
 
-# 🔹 MOVIMIENTOS
+# MOVIMIENTOS
 def vecinos(pos):
     fila = pos // SIZE
     col = pos % SIZE
@@ -45,13 +61,13 @@ def vecinos(pos):
     return opciones
 
 
-# 🔹 MOVER AMIGAS
+# 🔹 MOVER AMIGAS (SIN ALTAR)
 def mover_amigas():
     nuevas = []
     ocupadas = set()
 
     for pos in st.session_state.amigas:
-        posibles = vecinos(pos)
+        posibles = [p for p in vecinos(pos) if p != ALTAR]
         random.shuffle(posibles)
 
         for p in posibles:
@@ -65,16 +81,26 @@ def mover_amigas():
     st.session_state.amigas = nuevas
 
 
-# 🔹 MOVER YASMINA
+# 🔹 MOVER YASMINA (AQUÍ ESTÁ LA CLAVE)
 def mover_yasmina(destino):
+
+    # mover yasmina
     st.session_state.yasmina = destino
+
+    # ganar directo
+    if destino == ALTAR:
+        st.session_state.win = True
+        return
+
+    # mover amigas
     mover_amigas()
 
-    if destino in st.session_state.amigas:
-        st.session_state.game_over = True
-
-    if destino == TOTAL - 1:
-        st.session_state.win = True
+    # 💥 detectar QUIÉN te pilla
+    for i, pos in enumerate(st.session_state.amigas):
+        if pos == destino:
+            st.session_state.game_over = True
+            st.session_state.evento = AMIGAS[i]
+            return
 
 
 # UI
@@ -83,16 +109,6 @@ st.title("💍 MISIÓN: LLEGAR AL ALTAR")
 
 y = st.session_state.yasmina
 posibles = vecinos(y)
-
-# IMÁGENES
-imagenes_amigas = [
-    "img/lorena.png",
-    "img/leslie.png",
-    "img/rut.png",
-    "img/lorena.png",
-    "img/leslie.png",
-    "img/rut.png",
-]
 
 # GRID
 for fila in range(SIZE):
@@ -108,7 +124,7 @@ for fila in range(SIZE):
 
             es_clickable = idx in posibles and not st.session_state.game_over and not st.session_state.win
 
-            # 🎨 estilos
+            # estilo
             color = "#ffffff"
             borde = "2px solid #ccc"
 
@@ -116,10 +132,21 @@ for fila in range(SIZE):
                 color = "#e8f7ff"
                 borde = "2px solid #00aaff"
 
-            if idx == TOTAL - 1:
+            if idx == ALTAR:
                 color = "#eaffea"
 
-            # 🔲 CAJA VISUAL
+            # contenido
+            contenido = ""
+
+            if idx == ALTAR:
+                contenido = "💒"
+            elif hay_yasmina:
+                contenido = "👰"
+            elif amigas_en_casilla:
+                contenido = "👯"
+            else:
+                contenido = ""
+
             st.markdown(
                 f"""
                 <div style="
@@ -130,33 +157,30 @@ for fila in range(SIZE):
                     display:flex;
                     align-items:center;
                     justify-content:center;
+                    font-size:28px;
                 ">
+                    {contenido}
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
-            # 👇 CONTENIDO REAL (IMÁGENES)
-            if idx == TOTAL - 1:
-                st.image("img/altar.png", width=50)
-
-            if hay_yasmina:
-                st.image("img/yasmina.png", width=50)
-
-            for i in amigas_en_casilla:
-                img = imagenes_amigas[i % len(imagenes_amigas)]
-                st.image(img, width=40)
-
-            # 👇 CLICK
             if es_clickable:
                 if st.button("Mover", key=f"move_{idx}", use_container_width=True):
                     mover_yasmina(idx)
                     st.rerun()
 
 
-# GAME OVER
+# 💥 GAME OVER (AHORA PERSONALIZADO)
 if st.session_state.game_over:
-    st.error("💥 ¡UNA AMIGA TE HA PARADO! ¡NO TE CASES!")
+    amiga = st.session_state.evento
+
+    if amiga:
+        st.error(f"💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}")
+        st.markdown(f"### {amiga['msg']}")
+    else:
+        st.error("💥 ¡TE HAN PILLADO!")
+
     if st.button("🔁 Reiniciar"):
         reiniciar()
         st.rerun()
@@ -165,6 +189,7 @@ if st.session_state.game_over:
 # WIN
 if st.session_state.win:
     st.success("💒 ¡HAS LLEGADO AL ALTAR!")
+
     if st.button("🔁 Otra vez"):
         reiniciar()
         st.rerun()
