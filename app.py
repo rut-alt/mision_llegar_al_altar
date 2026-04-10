@@ -10,7 +10,7 @@ if "yasmina" not in st.session_state:
     st.session_state.yasmina = 0
 
 if "amigas" not in st.session_state:
-    st.session_state.amigas = random.sample(range(1, TOTAL-1), 5)
+    st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
 
 if "game_over" not in st.session_state:
     st.session_state.game_over = False
@@ -21,11 +21,12 @@ if "win" not in st.session_state:
 
 def reiniciar():
     st.session_state.yasmina = 0
-    st.session_state.amigas = random.sample(range(1, TOTAL-1), 5)
+    st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
     st.session_state.game_over = False
     st.session_state.win = False
 
 
+# MOVIMIENTO AMIGAS
 def mover_amigas():
     nuevas = []
     ocupadas = set()
@@ -64,19 +65,26 @@ st.set_page_config(layout="centered")
 st.title("💍 MISIÓN: LLEGAR AL ALTAR")
 
 y = st.session_state.yasmina
+
+# movimientos posibles (solo 1 casilla)
 posibles = [y+1, y-1, y+SIZE, y-SIZE]
 posibles = [p for p in posibles if 0 <= p < TOTAL]
 
-# GRID REAL CON BOTONES
+# GRID SERPIENTE
 for fila in range(SIZE):
     cols = st.columns(SIZE)
 
     for col in range(SIZE):
-        idx = fila * SIZE + col
+
+        # zig-zag visual
+        if fila % 2 == 0:
+            idx = fila * SIZE + col
+        else:
+            idx = fila * SIZE + (SIZE - 1 - col)
 
         with cols[col]:
 
-            contenido = ""
+            contenido = "⬜"
 
             if idx == TOTAL - 1:
                 contenido = "💒"
@@ -85,13 +93,13 @@ for fila in range(SIZE):
             elif idx in st.session_state.amigas:
                 contenido = "👯"
 
-            # CLICKABLE
+            # CLICK SOLO SI ES MOVIMIENTO VÁLIDO
             if idx in posibles and not st.session_state.game_over and not st.session_state.win:
-                if st.button(contenido or "⬜", key=f"cell_{idx}"):
+                if st.button(contenido, key=f"cell_{idx}", use_container_width=True):
                     mover_yasmina(idx)
                     st.rerun()
             else:
-                st.markdown(f"<div style='text-align:center; font-size:24px'>{contenido or '⬜'}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='text-align:center; font-size:28px; padding:10px'>{contenido}</div>", unsafe_allow_html=True)
 
 
 # GAME OVER
