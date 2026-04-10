@@ -26,7 +26,7 @@ def reiniciar():
     st.session_state.win = False
 
 
-# 🔹 MOVIMIENTOS CONTIGUOS
+# 🔹 MOVIMIENTOS
 def vecinos(pos):
     fila = pos // SIZE
     col = pos % SIZE
@@ -68,7 +68,6 @@ def mover_amigas():
 # 🔹 MOVER YASMINA
 def mover_yasmina(destino):
     st.session_state.yasmina = destino
-
     mover_amigas()
 
     if destino in st.session_state.amigas:
@@ -85,7 +84,7 @@ st.title("💍 MISIÓN: LLEGAR AL ALTAR")
 y = st.session_state.yasmina
 posibles = vecinos(y)
 
-# 📸 IMÁGENES
+# IMÁGENES
 imagenes_amigas = [
     "img/lorena.png",
     "img/leslie.png",
@@ -120,45 +119,39 @@ for fila in range(SIZE):
             if idx == TOTAL - 1:
                 color = "#eaffea"
 
-            # 👇 BOTÓN COMO CASILLA (clave)
-            if es_clickable:
-                if st.button(" ", key=f"cell_{idx}", use_container_width=True):
-                    mover_yasmina(idx)
-                    st.rerun()
-
-            # 🧩 CONTENIDO VISUAL
-            contenido = ""
-
-            if idx == TOTAL - 1:
-                contenido += "💒"
-
-            if hay_yasmina:
-                contenido += "<br><img src='img/yasmina.png' width='45'>"
-
-            for i in amigas_en_casilla:
-                img = imagenes_amigas[i % len(imagenes_amigas)]
-                contenido += f"<br><img src='{img}' width='40'>"
-
-            # 🟦 CASILLA
+            # 🔲 CAJA VISUAL
             st.markdown(
                 f"""
                 <div style="
                     background:{color};
                     border:{borde};
-                    height:75px;
-                    margin-top:-70px;
+                    height:80px;
+                    border-radius:10px;
                     display:flex;
-                    flex-direction:column;
                     align-items:center;
                     justify-content:center;
-                    border-radius:12px;
-                    font-size:20px;
                 ">
-                    {contenido}
                 </div>
                 """,
                 unsafe_allow_html=True
             )
+
+            # 👇 CONTENIDO REAL (IMÁGENES)
+            if idx == TOTAL - 1:
+                st.image("img/altar.png", width=50)
+
+            if hay_yasmina:
+                st.image("img/yasmina.png", width=50)
+
+            for i in amigas_en_casilla:
+                img = imagenes_amigas[i % len(imagenes_amigas)]
+                st.image(img, width=40)
+
+            # 👇 CLICK
+            if es_clickable:
+                if st.button("Mover", key=f"move_{idx}", use_container_width=True):
+                    mover_yasmina(idx)
+                    st.rerun()
 
 
 # GAME OVER
