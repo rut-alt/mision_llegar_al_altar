@@ -95,6 +95,7 @@ imagenes_amigas = [
 ]
 
 # GRID
+# GRID CON IMÁGENES DENTRO
 for fila in range(SIZE):
     cols = st.columns(SIZE)
 
@@ -119,7 +120,20 @@ for fila in range(SIZE):
             if idx == TOTAL - 1:
                 color = "#eaffea"
 
-            # 🔲 CAJA VISUAL
+            # 📦 CONTENIDO HTML REAL
+            contenido = ""
+
+            if idx == TOTAL - 1:
+                contenido += "<div>💒</div>"
+
+            if hay_yasmina:
+                contenido += "<img src='img/yasmina.png' style='width:40px;'>"
+
+            for i in amigas_en_casilla:
+                img = imagenes_amigas[i % len(imagenes_amigas)]
+                contenido += f"<img src='{img}' style='width:35px;'>"
+
+            # 🟦 CASILLA
             st.markdown(
                 f"""
                 <div style="
@@ -128,31 +142,22 @@ for fila in range(SIZE):
                     height:80px;
                     border-radius:10px;
                     display:flex;
+                    flex-wrap:wrap;
                     align-items:center;
                     justify-content:center;
+                    gap:2px;
                 ">
+                    {contenido}
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
-            # 👇 CONTENIDO REAL (IMÁGENES)
-            if idx == TOTAL - 1:
-                st.image("img/altar.png", width=50)
-
-            if hay_yasmina:
-                st.image("img/yasmina.png", width=50)
-
-            for i in amigas_en_casilla:
-                img = imagenes_amigas[i % len(imagenes_amigas)]
-                st.image(img, width=40)
-
             # 👇 CLICK
             if es_clickable:
-                if st.button("Mover", key=f"move_{idx}", use_container_width=True):
+                if st.button(" ", key=f"move_{idx}", use_container_width=True):
                     mover_yasmina(idx)
                     st.rerun()
-
 
 # GAME OVER
 if st.session_state.game_over:
