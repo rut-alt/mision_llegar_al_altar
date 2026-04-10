@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import os
 
 # CONFIG
 SIZE = 6
@@ -24,6 +25,14 @@ def reiniciar():
     st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
     st.session_state.game_over = False
     st.session_state.win = False
+
+
+# 🔹 FUNCION SEGURA PARA IMÁGENES
+def mostrar_imagen(path, size=50, fallback="⬜"):
+    if os.path.exists(path):
+        st.image(path, width=size)
+    else:
+        st.markdown(f"<div style='font-size:28px'>{fallback}</div>", unsafe_allow_html=True)
 
 
 # 🔹 MOVIMIENTOS CONTIGUOS
@@ -108,13 +117,12 @@ for fila in range(SIZE):
             hay_yasmina = idx == st.session_state.yasmina
             amigas_en_casilla = [i for i, pos in enumerate(st.session_state.amigas) if pos == idx]
 
-            # 🟢 CLICKABLE
+            # CLICKABLE
             if idx in posibles and not st.session_state.game_over and not st.session_state.win:
                 if st.button("⬜", key=f"cell_{idx}", use_container_width=True):
                     mover_yasmina(idx)
                     st.rerun()
 
-            # 🔴 NORMAL
             else:
                 # ALTAR
                 if idx == TOTAL - 1:
@@ -122,12 +130,12 @@ for fila in range(SIZE):
 
                 # YASMINA
                 if hay_yasmina:
-                    st.image("img/yasmina.png", width=60)
+                    mostrar_imagen("img/yasmina.png", 60, "👰")
 
-                # AMIGAS (pueden coincidir varias)
+                # AMIGAS
                 for i in amigas_en_casilla:
                     img = imagenes_amigas[i % len(imagenes_amigas)]
-                    st.image(img, width=50)
+                    mostrar_imagen(img, 50, "👯")
 
                 # VACÍA
                 if not hay_yasmina and not amigas_en_casilla and idx != TOTAL - 1:
