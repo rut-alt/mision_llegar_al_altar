@@ -83,7 +83,7 @@ for i in range(NUM_CASILLAS + 1):
 
         # YASMINA
         if i == st.session_state.pos_yasmina:
-            st.image("img/yasmina.png", width=70)
+            st.image("img/yasmina.png.png", width=70)
 
         # AMIGAS
         for idx, amiga in enumerate(AMIGAS):
@@ -111,7 +111,7 @@ if st.session_state.win:
     st.balloons()
     st.success("💒 ¡YASMINA HA CONSEGUIDO CASARSE!")
 
-    st.image("img/yasmina.png", width=200)
+    st.image("img/yasmina.png.png", width=200)
 
     if st.button("🔁 Otra vez"):
         reiniciar()
