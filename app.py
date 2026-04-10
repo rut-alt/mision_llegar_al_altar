@@ -162,69 +162,66 @@ for fila in range(SIZE):
 
 
 # 💥 POPUP MODAL
+# 💥 POPUP MODAL
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
     if amiga:
-img_html = f"<img src='{amiga['img']}' width='120'>" if amiga.get("img") else ""
+        img_html = f"<img src='{amiga['img']}' width='120'>" if amiga.get("img") else ""
 
-st.markdown(
-    f"""
-    <style>
-    .overlay {{
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.6);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        pointer-events: none;
-    }}
-    .modal {{
-        position: relative;
-        background: white;
-        padding: 30px;
-        border-radius: 20px;
-        text-align: center;
-        max-width: 300px;
-        pointer-events: auto;
-    }}
-    .close {{
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 22px;
-        font-weight: bold;
-    }}
-    </style>
+        st.markdown(
+            f"""
+            <style>
+            .overlay {{
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                pointer-events: none;
+            }}
+            .modal {{
+                position: relative;
+                background: white;
+                padding: 30px;
+                border-radius: 20px;
+                text-align: center;
+                max-width: 300px;
+                pointer-events: auto;
+            }}
+            .close {{
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 22px;
+                font-weight: bold;
+            }}
+            </style>
 
-    <div class="overlay">
-        <div class="modal">
-            <div class="close">❌</div>
-            <h2>💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}</h2>
-            {img_html}
-            <p style="font-size:18px;">{amiga['msg']}</p>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-col1, col2, col3 = st.columns([3,1,3])
+            <div class="overlay">
+                <div class="modal">
+                    <div class="close">❌</div>
+                    <h2>💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}</h2>
+                    {img_html}
+                    <p style="font-size:18px;">{amiga['msg']}</p>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-with col2:
-    if st.button("❌", key="close_modal"):
-        reiniciar()
-        st.rerun()
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
+    # BOTÓN REAL
+    col1, col2, col3 = st.columns([3,1,3])
 
-    if st.button("💔 Cerrar y reiniciar", use_container_width=True):
-        reiniciar()
-        st.rerun()
-
+    with col2:
+        if st.button("❌", key="close_modal"):
+            reiniciar()
+            st.rerun()
 
 # WIN
 if st.session_state.win:
