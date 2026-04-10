@@ -26,15 +26,32 @@ def reiniciar():
     st.session_state.win = False
 
 
-# MOVIMIENTO AMIGAS
+# 🔹 CASILLAS CONTIGUAS
+def vecinos(pos):
+    opciones = []
+
+    fila = pos // SIZE
+    col = pos % SIZE
+
+    if col > 0:
+        opciones.append(pos - 1)
+    if col < SIZE - 1:
+        opciones.append(pos + 1)
+    if fila > 0:
+        opciones.append(pos - SIZE)
+    if fila < SIZE - 1:
+        opciones.append(pos + SIZE)
+
+    return opciones
+
+
+# 🔹 MOVER AMIGAS
 def mover_amigas():
     nuevas = []
     ocupadas = set()
 
     for pos in st.session_state.amigas:
-        posibles = [pos-1, pos+1, pos-SIZE, pos+SIZE]
-        posibles = [p for p in posibles if 0 <= p < TOTAL]
-
+        posibles = vecinos(pos)
         random.shuffle(posibles)
 
         for p in posibles:
@@ -48,6 +65,7 @@ def mover_amigas():
     st.session_state.amigas = nuevas
 
 
+# 🔹 MOVER YASMINA
 def mover_yasmina(destino):
     st.session_state.yasmina = destino
 
@@ -65,41 +83,42 @@ st.set_page_config(layout="centered")
 st.title("💍 MISIÓN: LLEGAR AL ALTAR")
 
 y = st.session_state.yasmina
+posibles = vecinos(y)
 
-# movimientos posibles (solo 1 casilla)
-posibles = [y+1, y-1, y+SIZE, y-SIZE]
-posibles = [p for p in posibles if 0 <= p < TOTAL]
-
-# GRID SERPIENTE
+# GRID
 for fila in range(SIZE):
     cols = st.columns(SIZE)
 
     for col in range(SIZE):
 
-        # zig-zag visual
-        if fila % 2 == 0:
-            idx = fila * SIZE + col
-        else:
-            idx = fila * SIZE + (SIZE - 1 - col)
+        idx = fila * SIZE + col
 
         with cols[col]:
 
-            contenido = "⬜"
+            contenido = ""
 
             if idx == TOTAL - 1:
-                contenido = "💒"
-            elif idx == st.session_state.yasmina:
-                contenido = "👰"
-            elif idx in st.session_state.amigas:
-                contenido = "👯"
+                contenido += "💒"
 
-            # CLICK SOLO SI ES MOVIMIENTO VÁLIDO
+            if idx == st.session_state.yasmina:
+                contenido += "👰"
+
+            if idx in st.session_state.amigas:
+                contenido += "👯"
+
+            if contenido == "":
+                contenido = "⬜"
+
+            # CLICK SOLO SI ES VECINO
             if idx in posibles and not st.session_state.game_over and not st.session_state.win:
                 if st.button(contenido, key=f"cell_{idx}", use_container_width=True):
                     mover_yasmina(idx)
                     st.rerun()
             else:
-                st.markdown(f"<div style='text-align:center; font-size:28px; padding:10px'>{contenido}</div>", unsafe_allow_html=True)
+                st.markdown(
+                    f"<div style='text-align:center; font-size:28px; padding:10px'>{contenido}</div>",
+                    unsafe_allow_html=True
+                )
 
 
 # GAME OVER
