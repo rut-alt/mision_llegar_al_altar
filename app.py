@@ -159,19 +159,36 @@ for fila in range(SIZE):
                     st.rerun()
 
 
-# 💥 MODAL REAL (ESTO ES LO IMPORTANTE)
+# 💥 POPUP FUNCIONAL REAL
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
-    with st.modal("💥 ¡NO TE CASES!"):
-        st.markdown(f"## Has coincidido con **{amiga['nombre']}**")
+    st.markdown("---")
+
+    col1, col2, col3 = st.columns([1,2,1])
+
+    with col2:
+        st.markdown(
+            f"""
+            <div style="
+                background:white;
+                padding:30px;
+                border-radius:20px;
+                text-align:center;
+                box-shadow:0 0 20px rgba(0,0,0,0.2);
+            ">
+                <h2>💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}</h2>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
         st.image(amiga["img"], width=150)
         st.markdown(f"### {amiga['msg']}")
 
-        if st.button("💔 Cerrar y reiniciar"):
+        if st.button("💔 Cerrar y reiniciar", use_container_width=True):
             reiniciar()
             st.rerun()
-
 
 # WIN
 if st.session_state.win:
