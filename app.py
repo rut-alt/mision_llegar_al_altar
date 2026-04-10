@@ -68,9 +68,6 @@ st.set_page_config(page_title="Boda Yasmina 💍", layout="centered")
 
 st.title("💍 MISIÓN: LLEGAR AL ALTAR")
 
-# 🎵 música
-st.audio("audio/boda.mp3", loop=True)
-
 # 🎲 dado visual
 st.markdown(f"## 🎲 Dado: {st.session_state.dado}")
 
@@ -88,7 +85,7 @@ for i in range(NUM_CASILLAS + 1):
         if i == st.session_state.pos_yasmina:
             st.image("img/yasmina.png", width=70)
 
-        # AMIGAS (cada una con su cara)
+        # AMIGAS
         for idx, amiga in enumerate(AMIGAS):
             if i == st.session_state.pos_amigas[idx]:
                 st.image(amiga["img"], width=50)
@@ -98,7 +95,7 @@ if not st.session_state.game_over and not st.session_state.win:
     if st.button("🎲 Tirar dado"):
         tirar_dado()
 
-# 💥 EVENTO (pantalla grande)
+# 💥 EVENTO
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
