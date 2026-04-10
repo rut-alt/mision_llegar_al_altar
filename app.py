@@ -6,7 +6,7 @@ SIZE = 6
 TOTAL = SIZE * SIZE
 ALTAR = TOTAL - 1
 
-# AMIGAS (AHORA CON MENSAJE)
+# AMIGAS
 AMIGAS = [
     {"nombre": "Lorena", "msg": "💅 ¡Outfit urgente!", "img": "img/lorena.png"},
     {"nombre": "Leslie", "msg": "🍷 He abierto vino...", "img": "img/leslie.png"},
@@ -17,14 +17,11 @@ AMIGAS = [
 ]
 
 # INIT
-if "evento" in st.session_state and st.session_state.evento:
-    if "img" not in st.session_state.evento:
-        st.session_state.evento = None
 if "yasmina" not in st.session_state:
     st.session_state.yasmina = 0
 
 if "amigas" not in st.session_state:
-    st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
+    st.session_state.amigas = random.sample(range(1, TOTAL-1), len(AMIGAS))
 
 if "game_over" not in st.session_state:
     st.session_state.game_over = False
@@ -32,14 +29,13 @@ if "game_over" not in st.session_state:
 if "win" not in st.session_state:
     st.session_state.win = False
 
-# 🔥 NUEVO
 if "evento" not in st.session_state:
     st.session_state.evento = None
 
 
 def reiniciar():
     st.session_state.yasmina = 0
-    st.session_state.amigas = random.sample(range(1, TOTAL-1), 6)
+    st.session_state.amigas = random.sample(range(1, TOTAL-1), len(AMIGAS))
     st.session_state.game_over = False
     st.session_state.win = False
     st.session_state.evento = None
@@ -64,7 +60,7 @@ def vecinos(pos):
     return opciones
 
 
-# 🔹 MOVER AMIGAS (SIN ALTAR)
+# MOVER AMIGAS
 def mover_amigas():
     nuevas = []
     ocupadas = set()
@@ -84,21 +80,16 @@ def mover_amigas():
     st.session_state.amigas = nuevas
 
 
-# 🔹 MOVER YASMINA (AQUÍ ESTÁ LA CLAVE)
+# MOVER YASMINA
 def mover_yasmina(destino):
-
-    # mover yasmina
     st.session_state.yasmina = destino
 
-    # ganar directo
     if destino == ALTAR:
         st.session_state.win = True
         return
 
-    # mover amigas
     mover_amigas()
 
-    # 💥 detectar QUIÉN te pilla
     for i, pos in enumerate(st.session_state.amigas):
         if pos == destino:
             st.session_state.game_over = True
@@ -127,7 +118,6 @@ for fila in range(SIZE):
 
             es_clickable = idx in posibles and not st.session_state.game_over and not st.session_state.win
 
-            # estilo
             color = "#ffffff"
             borde = "2px solid #ccc"
 
@@ -137,9 +127,6 @@ for fila in range(SIZE):
 
             if idx == ALTAR:
                 color = "#eaffea"
-
-            # contenido
-            contenido = ""
 
             if idx == ALTAR:
                 contenido = "💒"
@@ -174,12 +161,13 @@ for fila in range(SIZE):
                     st.rerun()
 
 
-# 💥 GAME OVER (AHORA PERSONALIZADO)
-# 💥 POPUP MODAL GAME OVER
+# 💥 POPUP MODAL
 if st.session_state.game_over:
     amiga = st.session_state.evento
 
     if amiga:
+        img_html = f"<img src='{amiga['img']}' width='120'>" if amiga.get("img") else ""
+
         st.markdown(
             f"""
             <style>
@@ -194,6 +182,7 @@ if st.session_state.game_over:
                 align-items: center;
                 justify-content: center;
                 z-index: 9999;
+                pointer-events: none;
             }}
             .modal {{
                 background: white;
@@ -201,13 +190,14 @@ if st.session_state.game_over:
                 border-radius: 20px;
                 text-align: center;
                 max-width: 300px;
+                pointer-events: auto;
             }}
             </style>
 
             <div class="overlay">
                 <div class="modal">
                     <h2>💥 HAS COINCIDIDO CON {amiga['nombre'].upper()}</h2>
-                    <img src="{amiga['img']}" width="120">
+                    {img_html}
                     <p style="font-size:18px;">{amiga['msg']}</p>
                 </div>
             </div>
@@ -215,7 +205,6 @@ if st.session_state.game_over:
             unsafe_allow_html=True
         )
 
-    # botón fuera del modal (Streamlit limitation)
     st.markdown("<br><br><br>", unsafe_allow_html=True)
 
     if st.button("💔 Cerrar y reiniciar", use_container_width=True):
