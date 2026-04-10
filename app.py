@@ -95,7 +95,7 @@ imagenes_amigas = [
 ]
 
 # GRID
-# GRID DEFINITIVO (IMÁGENES DENTRO)
+# GRID REAL FUNCIONAL (IMÁGENES DENTRO)
 for fila in range(SIZE):
     cols = st.columns(SIZE)
 
@@ -109,7 +109,7 @@ for fila in range(SIZE):
 
             es_clickable = idx in posibles and not st.session_state.game_over and not st.session_state.win
 
-            # 🎨 estilos
+            # 🎨 estilo visual
             color = "#ffffff"
             borde = "2px solid #ccc"
 
@@ -120,43 +120,42 @@ for fila in range(SIZE):
             if idx == TOTAL - 1:
                 color = "#eaffea"
 
-            # 🟦 CONTENEDOR VISUAL
-            contenedor = st.container()
+            # 🟦 CAJA VISUAL
+            st.markdown(
+                f"""
+                <div style="
+                    background:{color};
+                    border:{borde};
+                    height:90px;
+                    border-radius:12px;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                ">
+                """,
+                unsafe_allow_html=True
+            )
 
-            with contenedor:
-                st.markdown(
-                    f"""
-                    <div style="
-                        background:{color};
-                        border:{borde};
-                        height:80px;
-                        border-radius:10px;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                    ">
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            # 👇 CONTENIDO (AHORA SÍ DENTRO)
+            if idx == TOTAL - 1:
+                st.image("img/altar.png", width=40)
 
-                # 👇 IMÁGENES ENCIMA (TRUCO)
-                if idx == TOTAL - 1:
-                    st.image("img/altar.png", width=40)
+            if hay_yasmina:
+                st.image("img/yasmina.png", width=40)
 
-                if hay_yasmina:
-                    st.image("img/yasmina.png", width=40)
+            for i in amigas_en_casilla:
+                img = imagenes_amigas[i % len(imagenes_amigas)]
+                st.image(img, width=35)
 
-                for i in amigas_en_casilla:
-                    img = imagenes_amigas[i % len(imagenes_amigas)]
-                    st.image(img, width=35)
+            # cerrar div
+            st.markdown("</div>", unsafe_allow_html=True)
 
             # 👇 CLICK
             if es_clickable:
                 if st.button("Mover", key=f"move_{idx}", use_container_width=True):
                     mover_yasmina(idx)
                     st.rerun()
-
 # GAME OVER
 if st.session_state.game_over:
     st.error("💥 ¡UNA AMIGA TE HA PARADO! ¡NO TE CASES!")
