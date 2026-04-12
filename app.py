@@ -1,8 +1,47 @@
 import streamlit as st
 import os
 import urllib.parse
+import base64
+import glob
+import time
 
 st.set_page_config(layout="centered")
+
+# ========================
+# OCULTAR UI STREAMLIT
+# ========================
+st.markdown("""
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+body {background-color: #0f0f0f;}
+
+.block {
+    background: #1c1c1c;
+    padding: 25px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+}
+
+.text {
+    color: #d1d1d1;
+    font-size: 17px;
+}
+
+.pink {
+    color: #ff4da6;
+    font-weight: bold;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ========================
 # CONFIG
@@ -10,55 +49,13 @@ st.set_page_config(layout="centered")
 TOTAL_STEPS = 6
 
 AMIGAS = {
-    "rut": {
-        "img": "img/rut.png",
-        "telefono": "34663413206",
-        "historia": "Te vas a México en horas. Todo es impulsivo y sin control.",
-    },
-    "marta": {
-        "img": "img/marta.png",
-        "telefono": "34655068171",
-        "historia": "Acabas metida en un caos con gatos que no termina nunca.",
-    },
-    "lorena": {
-        "img": "img/lorena.png",
-        "telefono": "34676097913",
-        "historia": "Cambias completamente tu look y pierdes la noción del tiempo.",
-    },
-    "leslie": {
-        "img": "img/leslie.png",
-        "telefono": "34688422600",
-        "historia": "Una copa lleva a otra y el plan cambia por completo.",
-    },
-    "julia": {
-        "img": "img/julia.png",
-        "telefono": "34615853540",
-        "historia": "Una conversación se alarga más de lo esperado.",
-    },
-    "andrea": {
-        "img": "img/andrea.png",
-        "telefono": "34635288588",
-        "historia": "Te pierdes ayudando a Andrea y todo cambia.",
-    },
+    "rut": {"img": "img/rut.png", "telefono": "34600000001", "historia": "Te vas a México en horas. Todo es impulsivo."},
+    "marta": {"img": "img/marta.png", "telefono": "34600000002", "historia": "Te quedas con Marta y los gatos se convierten en caos."},
+    "lorena": {"img": "img/lorena.png", "telefono": "34600000003", "historia": "Cambias tu look y el tiempo desaparece."},
+    "leslie": {"img": "img/leslie.png", "telefono": "34600000004", "historia": "Una copa cambia todo el plan."},
+    "julia": {"img": "img/julia.png", "telefono": "34600000005", "historia": "La conversación se alarga demasiado."},
+    "andrea": {"img": "img/andrea.png", "telefono": "34600000006", "historia": "Te pierdes ayudando a Andrea."},
 }
-
-# ========================
-# ESTILO
-# ========================
-st.markdown("""
-<style>
-body {background-color: #0f0f0f;}
-.block {
-    background: #1c1c1c;
-    padding: 25px;
-    border-radius: 18px;
-    margin-bottom: 20px;
-}
-.title {font-size: 28px; font-weight: bold; color: white;}
-.text {color: #d1d1d1; font-size: 17px;}
-.pink {color: #ff4da6; font-weight: bold;}
-</style>
-""", unsafe_allow_html=True)
 
 # ========================
 # FUNCIONES
@@ -66,6 +63,28 @@ body {background-color: #0f0f0f;}
 def mostrar_imagen(ruta, width=150):
     if os.path.exists(ruta):
         st.image(ruta, width=width)
+
+def autoplay_audio(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, "rb") as f:
+            data = f.read()
+            b64 = base64.b64encode(data).decode()
+
+        md = f"""
+        <audio autoplay loop>
+        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+        </audio>
+        """
+        st.markdown(md, unsafe_allow_html=True)
+
+def carrusel_fotos():
+    fotos = glob.glob("img/fotos/*.jpg")
+    if fotos:
+        placeholder = st.empty()
+        for foto in fotos:
+            with placeholder.container():
+                st.image(foto, use_column_width=True)
+            time.sleep(2)
 
 def reiniciar():
     st.session_state.pantalla = "juego"
@@ -76,7 +95,7 @@ def reiniciar():
 
 def obtener_evento(step):
     eventos = [
-        {"texto": "Empieza el día.", "ok": "Seguir", "bad": "Revisar algo"},
+        {"texto": "Empieza el día.", "ok": "Seguir", "bad": "Revisar"},
         {"texto": "Algo interrumpe.", "ok": "Continuar", "bad": "Pararte"},
         {"texto": "Dudas un momento.", "ok": "Seguir", "bad": "Consultar"},
         {"texto": "Recibes algo.", "ok": "Ignorar", "bad": "Responder"},
@@ -97,7 +116,6 @@ def elegir(resultado, amiga=None):
 
 def ranking():
     n = len(st.session_state.desvios)
-
     if n == 0:
         return "Novia imparable"
     elif n <= 2:
@@ -137,7 +155,7 @@ if st.session_state.pantalla == "inicio":
     st.markdown("""
     Tendrás que tomar decisiones sin saber qué pasará.
 
-    Si te desvías, tendrás otra historia.
+    Si te desvías, vivirás otra historia.
 
     Envía captura a cada amiga diciendo si te habría gustado esa vida.
 
@@ -213,10 +231,30 @@ elif st.session_state.pantalla == "win":
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
 
-    st.markdown(f"Has llegado al altar\n\nTipo de novia: **{tipo}**")
+    st.markdown(f"""
+    Has llegado al altar.
+
+    Tipo de novia: **{tipo}**
+
+    Bueno Yas...
+
+    Has llegado.
+
+    Pero no vas a poder deshacerte nunca de tus amigas.
+
+    Aquí tienes un resumen de vuestra vida juntas.
+    """)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # música
+    autoplay_audio("audio/musica.mp3")
+
+    st.markdown("### Vuestra vida")
+
+    # carrusel
+    carrusel_fotos()
 
     if st.button("Jugar otra vez"):
         reiniciar()
         st.rerun()
-
-    st.markdown('</div>', unsafe_allow_html=True)
