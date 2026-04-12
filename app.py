@@ -9,14 +9,6 @@ st.set_page_config(layout="centered")
 # ========================
 TOTAL_STEPS = 6
 
-# 👰 IMÁGENES YASMINA (CREA ESTAS)
-YASMINA_STATES = [
-    "img/yasmina1.png",
-    "img/yasmina2.png",
-    "img/yasmina3.png",
-    "img/yasmina4.png",
-]
-
 AMIGAS = {
     "rut": {
         "img": "img/rut.png",
@@ -61,6 +53,7 @@ body {background-color: #0f0f0f;}
     padding: 25px;
     border-radius: 18px;
     margin-bottom: 20px;
+    text-align:center;
 }
 .title {font-size: 28px; font-weight: bold; color: white;}
 .text {color: #d1d1d1; font-size: 17px;}
@@ -74,10 +67,6 @@ body {background-color: #0f0f0f;}
 def mostrar_imagen(ruta, width=150):
     if os.path.exists(ruta):
         st.image(ruta, width=width)
-
-def obtener_yasmina(step):
-    idx = int((step / TOTAL_STEPS) * (len(YASMINA_STATES)-1))
-    return YASMINA_STATES[idx]
 
 def reiniciar():
     st.session_state.pantalla = "juego"
@@ -156,7 +145,7 @@ if st.session_state.pantalla == "inicio":
 
     Envía captura a cada amiga diciendo si te habría gustado esa vida.
 
-    Luego intenta llegar al final.
+    Luego intenta llegar al altar.
     """)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -172,12 +161,13 @@ elif st.session_state.pantalla == "juego":
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
 
-    # 👰 YASMINA AVANZANDO
-    mostrar_imagen(obtener_yasmina(st.session_state.step), 150)
+    # 👰 YASMINA
+    mostrar_imagen("img/yasmina.png", 150)
 
-    # 🏛️ ALTAR AL FINAL
-    if progreso > 0.7:
-        mostrar_imagen("img/altar.png", 120)
+    st.markdown("Tu objetivo:")
+
+    # 🏛️ ALTAR (DESTINO)
+    mostrar_imagen("img/altar.png", 120)
 
     evento = obtener_evento(st.session_state.step)
     st.markdown(evento["texto"])
@@ -239,7 +229,6 @@ elif st.session_state.pantalla == "win":
     tipo = ranking()
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
-
     st.markdown(f"Has llegado al altar\n\nTipo de novia: **{tipo}**")
 
     if st.button("Jugar otra vez"):
