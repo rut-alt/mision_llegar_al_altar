@@ -33,9 +33,12 @@ AMIGAS = {
     },
 }
 
+# FUNCION IMAGEN SEGURA
 def mostrar_imagen(ruta, width=150):
     if os.path.exists(ruta):
         st.image(ruta, width=width)
+    else:
+        st.warning(f"No se encuentra la imagen: {ruta}")
 
 # INIT
 if "pantalla" not in st.session_state:
@@ -112,6 +115,7 @@ def elegir(resultado):
         st.session_state.step += 1
 
         if st.session_state.step >= TOTAL_STEPS:
+            st.session_state.step = TOTAL_STEPS
             st.session_state.pantalla = "win"
     else:
         st.session_state.evento = resultado
@@ -121,7 +125,7 @@ def elegir(resultado):
 # UI
 st.title("Misión: llegar al altar")
 
-# 👉 PANTALLA INICIO (SIEMPRE PRIMERA)
+# 👉 INICIO
 if st.session_state.pantalla == "inicio":
 
     st.markdown("""
@@ -148,7 +152,12 @@ if st.session_state.pantalla == "inicio":
 # 👉 JUEGO
 elif st.session_state.pantalla == "juego":
 
-    progreso = st.session_state.step / TOTAL_STEPS
+    # proteger step
+    st.session_state.step = max(0, min(TOTAL_STEPS, st.session_state.step))
+
+    progreso = st.session_state.step / TOTAL_STEPS if TOTAL_STEPS > 0 else 0
+    progreso = max(0.0, min(1.0, progreso))
+
     st.progress(progreso)
 
     mostrar_imagen("img/yasmina.png", 120)
