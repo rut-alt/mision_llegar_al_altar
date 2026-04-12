@@ -9,6 +9,14 @@ st.set_page_config(layout="centered")
 # ========================
 TOTAL_STEPS = 6
 
+# 👰 IMÁGENES YASMINA (CREA ESTAS)
+YASMINA_STATES = [
+    "img/yasmina1.png",
+    "img/yasmina2.png",
+    "img/yasmina3.png",
+    "img/yasmina4.png",
+]
+
 AMIGAS = {
     "rut": {
         "img": "img/rut.png",
@@ -67,12 +75,17 @@ def mostrar_imagen(ruta, width=150):
     if os.path.exists(ruta):
         st.image(ruta, width=width)
 
+def obtener_yasmina(step):
+    idx = int((step / TOTAL_STEPS) * (len(YASMINA_STATES)-1))
+    return YASMINA_STATES[idx]
+
 def reiniciar():
     st.session_state.pantalla = "juego"
     st.session_state.step = 0
     st.session_state.evento = None
     st.session_state.valoracion = None
     st.session_state.desvios = []
+    st.session_state.confetti = False
 
 def obtener_evento(step):
     eventos = [
@@ -97,7 +110,6 @@ def elegir(resultado, amiga=None):
 
 def ranking():
     n = len(st.session_state.desvios)
-
     if n == 0:
         return "Novia imparable"
     elif n <= 2:
@@ -124,6 +136,9 @@ if "valoracion" not in st.session_state:
 
 if "desvios" not in st.session_state:
     st.session_state.desvios = []
+
+if "confetti" not in st.session_state:
+    st.session_state.confetti = False
 
 # ========================
 # UI
@@ -155,9 +170,19 @@ elif st.session_state.pantalla == "juego":
     progreso = max(0.0, min(1.0, st.session_state.step / TOTAL_STEPS))
     st.progress(progreso)
 
-    evento = obtener_evento(st.session_state.step)
+    st.markdown('<div class="block text">', unsafe_allow_html=True)
 
-    st.markdown(f'<div class="block text">{evento["texto"]}</div>', unsafe_allow_html=True)
+    # 👰 YASMINA AVANZANDO
+    mostrar_imagen(obtener_yasmina(st.session_state.step), 150)
+
+    # 🏛️ ALTAR AL FINAL
+    if progreso > 0.7:
+        mostrar_imagen("img/altar.png", 120)
+
+    evento = obtener_evento(st.session_state.step)
+    st.markdown(evento["texto"])
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
     if st.button(evento["ok"], use_container_width=True):
         elegir("ok")
@@ -207,7 +232,9 @@ elif st.session_state.pantalla == "game_over":
 # WIN
 elif st.session_state.pantalla == "win":
 
-    st.balloons()
+    if not st.session_state.confetti:
+        st.balloons()
+        st.session_state.confetti = True
 
     tipo = ranking()
 
