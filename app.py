@@ -4,6 +4,7 @@ import urllib.parse
 import base64
 import glob
 import re
+import time
 
 st.set_page_config(layout="centered")
 
@@ -16,32 +17,32 @@ AMIGAS = {
     "rut": {
         "img": "img/rut.png",
         "telefono": "34663413206",
-        "historia": "Te vas a México en horas. Ha encontrado vuelos por menos de 300€ y ha codigo uno para cada una. Todo es impulsivo y sin control. Ha cogido solo billetes de ida. No tenéis dinero para volver a España y montáis un puesto de quesadillas en una playa.",
+        "historia": "Te vas a México en horas. Ha encontrado vuelos por menos de 300€ y ha cogido uno para cada una. Todo es impulsivo.",
     },
     "marta": {
         "img": "img/marta.png",
         "telefono": "34655068171",
-        "historia": "Marta te ha pedido que vayas a darle de comer a los gatos. Acabas metida en un caos con gatos que no termina nunca. Pero la cosa es que te gusta, terminas convirtiendote en la mamá de los gatos de Marta y decides no casarte.",
+        "historia": "Te quedas con Marta y acabas siendo mamá de gatos.",
     },
     "lorena": {
         "img": "img/lorena.png",
         "telefono": "34676097913",
-        "historia": "Lori te pide que vayas a recogerla a Atocha porque , porqué iba a gastar ella dinero en pedir un uber? No la encuentras, tus nociones de encontrar pasajeros en las estaciones se han esfumado y te quedas dando vueltas en bucle por Atocha.",
+        "historia": "Das vueltas eternas en Atocha intentando encontrar a Lorena.",
     },
     "leslie": {
         "img": "img/leslie.png",
         "telefono": "34688422600",
-        "historia": "Te encuentras con Leslie en una cafetería tomando un matcha y pides otro. Una cosa lleva a la otra y esos matchas se convierten en copas . Una copa lleva a otra y el plan cambia por completo. Nunca llegas a la boda.",
+        "historia": "Un matcha se convierte en copas y nunca llegas a la boda.",
     },
     "julia": {
         "img": "img/julia.png",
         "telefono": "34615853540",
-        "historia": "Julia te llama por telefono para pedirte opinión sobre algot. Cuando empiezas a hablar con Julia, sabes cuándo empieza pero nunca cuándo acaba. La conversación se alarga más de lo esperado y nunca llegas al altar.",
+        "historia": "La llamada de Julia no termina nunca.",
     },
     "andrea": {
         "img": "img/andrea.png",
         "telefono": "346635288588",
-        "historia": "Andrea te llama a última hora para decirte que no le convence el vestido. Te pierdes ayudando a Andrea, ya no te convence tampoco tu vestido y todo cambia.",
+        "historia": "Andrea duda del vestido y acabas dudando tú también.",
     },
 }
 
@@ -78,24 +79,30 @@ def mostrar_imagen(ruta, width=150):
         st.image(ruta, width=width)
 
 def autoplay_audio(file_path):
-    if os.path.exists(file_path):
-        with open(file_path, "rb") as f:
-            data = f.read()
-            b64 = base64.b64encode(data).decode()
+    try:
+        if os.path.exists(file_path):
+            with open(file_path, "rb") as f:
+                data = f.read()
+                b64 = base64.b64encode(data).decode()
 
-        st.markdown(f"""
-        <audio autoplay loop>
-        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-        </audio>
-        """, unsafe_allow_html=True)
+            st.markdown(f"""
+            <audio autoplay loop>
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            </audio>
+            """, unsafe_allow_html=True)
+    except:
+        pass
 
 def carrusel_fotos():
-    fotos = glob.glob("img/foto*.png")
 
-    def ordenar(f):
-        return int(re.findall(r'\d+', f)[0])
+    with st.spinner("Recopilando momentos..."):
+        fotos = glob.glob("img/foto*.png")
 
-    fotos = sorted(fotos, key=ordenar)
+        def ordenar(f):
+            return int(re.findall(r'\d+', f)[0])
+
+        fotos = sorted(fotos, key=ordenar)
+        time.sleep(1.5)
 
     if "foto_idx" not in st.session_state:
         st.session_state.foto_idx = 0
@@ -112,6 +119,8 @@ def carrusel_fotos():
         with col2:
             if st.button("➡️"):
                 st.session_state.foto_idx = (st.session_state.foto_idx + 1) % len(fotos)
+    else:
+        st.warning("No hay fotos")
 
 def reiniciar():
     st.session_state.pantalla = "juego"
@@ -124,12 +133,12 @@ def reiniciar():
 
 def obtener_evento(step):
     eventos = [
-        {"texto": "Empieza el día y lo primero que haces es.", "ok": "Tomar un café", "bad": "Mirar el móvil"},
-        {"texto": "Algo interrumpe, Marta necesita que vayas a dar de comer a los gatos.", "ok": "Decirle que no tienes tiempo", "bad": "Ir a dar de comer a los gatos"},
-        {"texto": "Lorena te llama para que la recojas.", "ok": "Que se pida un Uber", "bad": "Ir a recogerla."},
-        {"texto": "Ves a alguien familiar en una cafetería.", "ok": "Ignorar", "bad": "Entrar a mirar quién es."},
-        {"texto": "Llamada de Julia, que querrá?", "ok": "Son eternas, ni loca.", "bad": "Veamos qué quiere."},
-        {"texto": "Último momento, llamada de Andrea.", "ok": "Colgar, no es tan urgente", "bad": "Ver qué quiere."},
+        {"texto": "Empieza el día.", "ok": "Seguir", "bad": "Mirar el móvil"},
+        {"texto": "Marta necesita ayuda con los gatos.", "ok": "No ir", "bad": "Ir"},
+        {"texto": "Lorena necesita que la recojas.", "ok": "Que coja Uber", "bad": "Ir"},
+        {"texto": "Ves a alguien en una cafetería.", "ok": "Ignorar", "bad": "Entrar"},
+        {"texto": "Julia te llama.", "ok": "No coger", "bad": "Coger"},
+        {"texto": "Andrea duda del vestido.", "ok": "Pasar", "bad": "Ayudar"},
     ]
     return eventos[step]
 
@@ -188,11 +197,9 @@ if st.session_state.pantalla == "inicio":
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
     st.markdown("""
-    Tendrás que tomar decisiones sin saber qué pasará.
+    Toma decisiones sin saber qué pasará.
 
-    Si te desvías, tendrás otra historia.
-
-    Envía captura a cada amiga diciendo si te habría gustado esa vida.
+    Si te desvías, vivirás otra vida.
 
     Luego intenta llegar al altar.
     """)
@@ -205,7 +212,7 @@ if st.session_state.pantalla == "inicio":
 # JUEGO
 elif st.session_state.pantalla == "juego":
 
-    progreso = max(0.0, min(1.0, st.session_state.step / TOTAL_STEPS))
+    progreso = st.session_state.step / TOTAL_STEPS
     st.progress(progreso)
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
@@ -234,31 +241,15 @@ elif st.session_state.pantalla == "game_over":
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
 
-    st.markdown(f'Has elegido a <span class="pink">{amiga_key.upper()}</span>', unsafe_allow_html=True)
+    st.markdown(f'<span class="pink">{amiga_key.upper()}</span>', unsafe_allow_html=True)
 
     mostrar_imagen(amiga["img"])
     st.markdown(amiga["historia"])
 
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if st.button("Sí"):
-            st.session_state.valoracion = "Sí"
-
-    with col2:
-        if st.button("No"):
-            st.session_state.valoracion = "No"
-
-    if st.session_state.valoracion:
-        texto = f"Me he ido contigo y {st.session_state.valoracion.lower()} me habría gustado esta vida"
-        url = f"https://wa.me/{amiga['telefono']}?text=" + urllib.parse.quote(texto)
-
-        st.markdown(f"[Enviar por WhatsApp]({url})")
-
-        if st.button("Seguir jugando"):
-            st.session_state.pantalla = "juego"
-            st.session_state.step += 1
-            st.rerun()
+    if st.button("Seguir"):
+        st.session_state.pantalla = "juego"
+        st.session_state.step += 1
+        st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -269,23 +260,10 @@ elif st.session_state.pantalla == "win":
         st.balloons()
         st.session_state.confetti = True
 
-    tipo = ranking()
-
-    st.markdown('<div class="block text">', unsafe_allow_html=True)
-
-    st.markdown(f"""
-    Has llegado al altar.
-
-    Tipo de novia: **{tipo}**
-
-    Aquí tienes vuestro resumen.
-    """)
-
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="block text">Has llegado al altar.</div>', unsafe_allow_html=True)
 
     autoplay_audio("audio/musica.mp3")
 
-    st.markdown("### Vuestra vida")
     carrusel_fotos()
 
     if st.button("Jugar otra vez"):
