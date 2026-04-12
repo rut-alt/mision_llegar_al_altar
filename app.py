@@ -128,7 +128,7 @@ def obtener_evento(step):
         {"texto": "Algo interrumpe, Marta necesita que vayas a dar de comer a los gatos.", "ok": "Decirle que no tienes tiempo", "bad": "Ir a dar de comer a los gatos"},
         {"texto": "Lorena te llama para que la recojas.", "ok": "Que se pida un Uber", "bad": "Ir a recogerla."},
         {"texto": "Ves a alguien familiar en una cafetería.", "ok": "Ignorar", "bad": "Entrar a mirar quién es."},
-        {"texto": "Llamada de Julia, que querrá?", "ok": "Cogérlo", "bad": "Son eternas, ni loca."},
+        {"texto": "Llamada de Julia, que querrá?", "ok": "Son eternas, ni loca.", "bad": "Veamos qué quiere."},
         {"texto": "Último momento, llamada de Andrea.", "ok": "Colgar, no es tan urgente", "bad": "Ver qué quiere."},
     ]
     return eventos[step]
