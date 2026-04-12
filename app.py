@@ -15,33 +15,33 @@ TOTAL_STEPS = 6
 AMIGAS = {
     "rut": {
         "img": "img/rut.png",
-        "telefono": "34600000001",
-        "historia": "Te vas a México en horas. Todo es impulsivo y sin control.",
+        "telefono": "34663413206",
+        "historia": "Te vas a México en horas. Ha encontrado vuelos por menos de 300€ y ha codigo uno para cada una. Todo es impulsivo y sin control. Ha cogido solo billetes de ida. No tenéis dinero para volver a España y montáis un puesto de quesadillas en una playa.",
     },
     "marta": {
         "img": "img/marta.png",
-        "telefono": "34600000002",
-        "historia": "Acabas metida en un caos con gatos que no termina nunca.",
+        "telefono": "34655068171",
+        "historia": "Marta te ha pedido que vayas a darle de comer a los gatos. Acabas metida en un caos con gatos que no termina nunca. Pero la cosa es que te gusta, terminas convirtiendote en la mamá de los gatos de Marta y decides no casarte.",
     },
     "lorena": {
         "img": "img/lorena.png",
-        "telefono": "34600000003",
-        "historia": "Cambias completamente tu look y pierdes la noción del tiempo.",
+        "telefono": "34676097913",
+        "historia": "Lori te pide que vayas a recogerla a Atocha porque , porqué iba a gastar ella dinero en pedir un uber? No la encuentras, tus nociones de encontrar pasajeros en las estaciones se han esfumado y te quedas dando vueltas en bucle por Atocha.",
     },
     "leslie": {
         "img": "img/leslie.png",
-        "telefono": "34600000004",
-        "historia": "Una copa lleva a otra y el plan cambia por completo.",
+        "telefono": "34688422600",
+        "historia": "Te encuentras con Leslie en una cafetería tomando un matcha y pides otro. Una cosa lleva a la otra y esos matchas se convierten en copas . Una copa lleva a otra y el plan cambia por completo. Nunca llegas a la boda.",
     },
     "julia": {
         "img": "img/julia.png",
-        "telefono": "34600000005",
-        "historia": "Una conversación se alarga más de lo esperado.",
+        "telefono": "34615853540",
+        "historia": "Julia te llama por telefono para pedirte opinión sobre algot. Cuando empiezas a hablar con Julia, sabes cuándo empieza pero nunca cuándo acaba. La conversación se alarga más de lo esperado y nunca llegas al altar.",
     },
     "andrea": {
         "img": "img/andrea.png",
-        "telefono": "34600000006",
-        "historia": "Te pierdes ayudando a Andrea y todo cambia.",
+        "telefono": "346635288588",
+        "historia": "Andrea te llama a última hora para decirte que no le convence el vestido. Te pierdes ayudando a Andrea, ya no te convence tampoco tu vestido y todo cambia.",
     },
 }
 
@@ -124,12 +124,12 @@ def reiniciar():
 
 def obtener_evento(step):
     eventos = [
-        {"texto": "Empieza el día.", "ok": "Seguir", "bad": "Revisar algo"},
-        {"texto": "Algo interrumpe.", "ok": "Continuar", "bad": "Pararte"},
-        {"texto": "Dudas un momento.", "ok": "Seguir", "bad": "Consultar"},
-        {"texto": "Recibes algo.", "ok": "Ignorar", "bad": "Responder"},
+        {"texto": "Empieza el día y lo primero que haces es.", "ok": "Tomar un café", "bad": "Mirar el móvil"},
+        {"texto": "Algo interrumpe, Marta necesita que vayas a dar de comer a los gatos.", "ok": "Decirle que no tienes tiempo", "bad": "Ir a dar de comer a los gatos"},
+        {"texto": "Lorena te llama para que la recojas.", "ok": "Que se pida un Uber", "bad": "Ir a recogerla."},
+        {"texto": "Ves a alguien familiar en una cafetería.", "ok": "Ignorar", "bad": "Entrar a mirar quién es."},
         {"texto": "Te cruzas con alguien.", "ok": "Seguir", "bad": "Pararte"},
-        {"texto": "Último momento.", "ok": "Continuar", "bad": "Desviarte"},
+        {"texto": "Último momento, llamada de Andrea.", "ok": "Colgar, no es tan urgente", "bad": "Ver qué quiere."},
     ]
     return eventos[step]
 
