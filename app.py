@@ -78,9 +78,11 @@ def autoplay_audio(file_path):
         st.markdown(md, unsafe_allow_html=True)
 
 def carrusel_fotos():
-    fotos = glob.glob("img/fotos/*.jpg")
+    fotos = sorted(glob.glob("img/foto*.png"))
+
     if fotos:
         placeholder = st.empty()
+
         for foto in fotos:
             with placeholder.container():
                 st.image(foto, use_column_width=True)
