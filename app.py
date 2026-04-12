@@ -11,49 +11,56 @@ TOTAL_STEPS = 6
 AMIGAS = {
     "rut": {
         "img": "img/rut.png",
-        "historia": "Te vas a México con Rut. En 48 horas estáis en una playa perdida. No hubo boda, pero sí una historia inolvidable.",
+        "historia": "Te vas a México con Rut. En menos de 24 horas estáis en un avión sin mirar atrás. Todo es improvisado, intenso y completamente distinto a lo planeado. No hay boda, pero sí una historia que contar siempre.",
     },
     "marta": {
         "img": "img/marta.png",
-        "historia": "Te quedas ayudando a Marta con los gatos. El caos se apodera del día y el altar deja de existir.",
+        "historia": "Te quedas con Marta ayudando con los gatos. Uno desaparece, otro no para de maullar y el día se convierte en un caos absoluto. El altar deja de ser prioridad.",
     },
     "lorena": {
         "img": "img/lorena.png",
-        "historia": "Lorena cambia todo tu look. Entre pruebas y dudas, el tiempo se esfuma.",
+        "historia": "Lorena cambia tu look completamente. Entre pruebas, fotos y dudas, el tiempo desaparece. Cuando te das cuenta, ya es tarde para volver atrás.",
     },
     "leslie": {
         "img": "img/leslie.png",
-        "historia": "Empieza con una copa… y acaba siendo una noche que cambia los planes.",
+        "historia": "Empieza con una copa tranquila. Luego otra. La situación se transforma en una noche inesperada que cambia todos los planes.",
     },
     "julia": {
         "img": "img/julia.png",
-        "historia": "La llamada se alarga más de lo esperado. El tiempo pasa y la decisión se toma sola.",
+        "historia": "Lo que iba a ser una llamada rápida se convierte en una conversación larga. El tiempo pasa sin darte cuenta y la decisión se toma sola.",
     },
     "andrea": {
         "img": "img/andrea.png",
-        "historia": "Andrea está perdida y decides ayudarla. El altar queda cada vez más lejos.",
+        "historia": "Andrea está completamente perdida y decides ayudarla. Das vueltas durante horas sin rumbo claro. El altar queda atrás.",
     },
 }
 
 # ========================
-# ESTILOS
+# ESTILO VISUAL (NETFLIX)
 # ========================
 st.markdown("""
 <style>
+body {
+    background-color: #0f0f0f;
+}
 .block {
-    background: #ffffff;
+    background: #1c1c1c;
     padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-radius: 18px;
     margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 .title {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: bold;
+    color: white;
 }
-.subtitle {
-    font-size: 18px;
-    color: #555;
+.text {
+    color: #d1d1d1;
+    font-size: 17px;
+}
+button[kind="primary"] {
+    background-color: #e50914;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -66,18 +73,16 @@ def mostrar_imagen(ruta, width=150):
         st.image(ruta, width=width)
 
 def reiniciar():
-    # 👉 reinicia DIRECTO al juego
     st.session_state.pantalla = "juego"
     st.session_state.step = 0
     st.session_state.evento = None
-    st.session_state.historia_alt = False
 
 def obtener_evento(step):
     eventos = [
         {
             "texto": "Yasmina se despierta el día de su boda.",
             "opciones": [
-                {"texto": "Levantarse y empezar", "resultado": "ok"},
+                {"texto": "Levantarse y empezar el día", "resultado": "ok"},
                 {"texto": "Mirar el móvil", "resultado": "rut"},
             ],
         },
@@ -85,18 +90,18 @@ def obtener_evento(step):
             "texto": "Sales de casa y alguien te frena.",
             "opciones": [
                 {"texto": "Seguir sin parar", "resultado": "ok"},
-                {"texto": "Pararte", "resultado": "julia"},
+                {"texto": "Pararte a hablar", "resultado": "julia"},
             ],
         },
         {
-            "texto": "Dudas con lo que llevas puesto.",
+            "texto": "Empiezas a dudar con tu look.",
             "opciones": [
-                {"texto": "Seguir igual", "resultado": "ok"},
+                {"texto": "Seguir con lo planeado", "resultado": "ok"},
                 {"texto": "Pedir opinión", "resultado": "lorena"},
             ],
         },
         {
-            "texto": "Recibes un mensaje.",
+            "texto": "Recibes un mensaje inesperado.",
             "opciones": [
                 {"texto": "Ignorarlo", "resultado": "ok"},
                 {"texto": "Responder", "resultado": "leslie"},
@@ -105,14 +110,14 @@ def obtener_evento(step):
         {
             "texto": "Te cruzas con Marta.",
             "opciones": [
-                {"texto": "Seguir", "resultado": "ok"},
-                {"texto": "Ayudar con los gatos", "resultado": "marta"},
+                {"texto": "Seguir tu camino", "resultado": "ok"},
+                {"texto": "Ayudarla con los gatos", "resultado": "marta"},
             ],
         },
         {
             "texto": "Último momento antes del altar.",
             "opciones": [
-                {"texto": "Entrar", "resultado": "ok"},
+                {"texto": "Entrar sin mirar atrás", "resultado": "ok"},
                 {"texto": "Ayudar a Andrea", "resultado": "andrea"},
             ],
         },
@@ -123,14 +128,13 @@ def elegir(resultado):
     if resultado == "ok":
         st.session_state.step += 1
         if st.session_state.step >= TOTAL_STEPS:
-            st.session_state.step = TOTAL_STEPS
             st.session_state.pantalla = "win"
     else:
         st.session_state.evento = resultado
         st.session_state.pantalla = "game_over"
 
 # ========================
-# INIT STATE
+# INIT
 # ========================
 if "pantalla" not in st.session_state:
     st.session_state.pantalla = "inicio"
@@ -140,9 +144,6 @@ if "step" not in st.session_state:
 
 if "evento" not in st.session_state:
     st.session_state.evento = None
-
-if "historia_alt" not in st.session_state:
-    st.session_state.historia_alt = False
 
 # ========================
 # UI
@@ -154,7 +155,7 @@ st.markdown('<div class="title">Misión: llegar al altar</div>', unsafe_allow_ht
 # ------------------------
 if st.session_state.pantalla == "inicio":
 
-    st.markdown('<div class="block">', unsafe_allow_html=True)
+    st.markdown('<div class="block text">', unsafe_allow_html=True)
 
     st.markdown("""
     Yasmina, este es tu camino al altar.
@@ -163,9 +164,11 @@ if st.session_state.pantalla == "inicio":
 
     Tus amigas van a intentar desviarte en todo momento.
 
-    Si eliges otro camino, podrás ver cómo habría sido tu vida.
+    Si tomas otro camino, verás cómo habría sido tu vida con esa decisión.
 
-    Haz capturas y compártelas.
+    Haz una captura de cada historia alternativa y mándasela a esa amiga, diciendo si te habría gustado o no vivir esa vida.
+
+    Después, consigue llegar al altar y haz una última captura.
     """)
 
     st.markdown('</div>', unsafe_allow_html=True)
@@ -179,22 +182,18 @@ if st.session_state.pantalla == "inicio":
 # ------------------------
 elif st.session_state.pantalla == "juego":
 
-    st.session_state.step = max(0, min(TOTAL_STEPS, st.session_state.step))
-
-    progreso = st.session_state.step / TOTAL_STEPS if TOTAL_STEPS > 0 else 0
-    progreso = max(0.0, min(1.0, progreso))
-
+    progreso = max(0.0, min(1.0, st.session_state.step / TOTAL_STEPS))
     st.progress(progreso)
 
-    st.markdown('<div class="block">', unsafe_allow_html=True)
+    st.markdown('<div class="block text">', unsafe_allow_html=True)
 
     mostrar_imagen("img/yasmina.png", 120)
 
     evento = obtener_evento(st.session_state.step)
 
-    st.markdown(f'<div class="subtitle">{evento["texto"]}</div>', unsafe_allow_html=True)
+    st.markdown(f"{evento['texto']}")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     for opcion in evento["opciones"]:
         if st.button(opcion["texto"], use_container_width=True):
@@ -208,22 +207,15 @@ elif st.session_state.pantalla == "game_over":
 
     amiga = AMIGAS[st.session_state.evento]
 
-    st.markdown('<div class="block">', unsafe_allow_html=True)
-
-    st.markdown("Has tomado otro camino")
+    st.markdown('<div class="block text">', unsafe_allow_html=True)
 
     mostrar_imagen(amiga["img"])
 
-    if not st.session_state.historia_alt:
-        if st.button("Ver historia alternativa", use_container_width=True):
-            st.session_state.historia_alt = True
-            st.rerun()
-    else:
-        st.markdown(amiga["historia"])
+    st.markdown(amiga["historia"])
 
-        if st.button("Volver a intentarlo", use_container_width=True):
-            reiniciar()
-            st.rerun()
+    if st.button("Volver a intentarlo", use_container_width=True):
+        reiniciar()
+        st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -234,14 +226,12 @@ elif st.session_state.pantalla == "win":
 
     st.progress(1.0)
 
-    st.markdown('<div class="block">', unsafe_allow_html=True)
-
-    st.markdown("Has llegado al altar")
+    st.markdown('<div class="block text">', unsafe_allow_html=True)
 
     st.markdown("""
-    Haz una captura de este momento.
+    Has llegado al altar.
 
-    Compártelo y demuestra que lo has conseguido.
+    Haz una captura de este momento y compártelo.
     """)
 
     if st.button("Jugar otra vez", use_container_width=True):
