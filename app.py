@@ -1,6 +1,9 @@
 import streamlit as st
 import os
 import urllib.parse
+import base64
+import glob
+import re
 
 st.set_page_config(layout="centered")
 
@@ -13,7 +16,7 @@ AMIGAS = {
     "rut": {
         "img": "img/rut.png",
         "telefono": "34600000001",
-        "historia": "Te vas a México en horas. Le ha saltado una notificación de vuelos por menos de 300€ y ha codigo uno para cada una. Se le ha olvidado pillar la vuelte, qué le vamos a hacer? Abrís un puesto de quesadillas en la playa y nunca regresáis a España. Tenéis una nueva nacionalidad.",
+        "historia": "Te vas a México en horas. Todo es impulsivo y sin control.",
     },
     "marta": {
         "img": "img/marta.png",
@@ -47,7 +50,12 @@ AMIGAS = {
 # ========================
 st.markdown("""
 <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
 body {background-color: #0f0f0f;}
+
 .block {
     background: #1c1c1c;
     padding: 25px;
@@ -55,6 +63,7 @@ body {background-color: #0f0f0f;}
     margin-bottom: 20px;
     text-align:center;
 }
+
 .title {font-size: 28px; font-weight: bold; color: white;}
 .text {color: #d1d1d1; font-size: 17px;}
 .pink {color: #ff4da6; font-weight: bold;}
@@ -68,6 +77,42 @@ def mostrar_imagen(ruta, width=150):
     if os.path.exists(ruta):
         st.image(ruta, width=width)
 
+def autoplay_audio(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, "rb") as f:
+            data = f.read()
+            b64 = base64.b64encode(data).decode()
+
+        st.markdown(f"""
+        <audio autoplay loop>
+        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+        </audio>
+        """, unsafe_allow_html=True)
+
+def carrusel_fotos():
+    fotos = glob.glob("img/foto*.png")
+
+    def ordenar(f):
+        return int(re.findall(r'\d+', f)[0])
+
+    fotos = sorted(fotos, key=ordenar)
+
+    if "foto_idx" not in st.session_state:
+        st.session_state.foto_idx = 0
+
+    if fotos:
+        st.image(fotos[st.session_state.foto_idx], use_column_width=True)
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if st.button("⬅️"):
+                st.session_state.foto_idx = (st.session_state.foto_idx - 1) % len(fotos)
+
+        with col2:
+            if st.button("➡️"):
+                st.session_state.foto_idx = (st.session_state.foto_idx + 1) % len(fotos)
+
 def reiniciar():
     st.session_state.pantalla = "juego"
     st.session_state.step = 0
@@ -75,6 +120,7 @@ def reiniciar():
     st.session_state.valoracion = None
     st.session_state.desvios = []
     st.session_state.confetti = False
+    st.session_state.foto_idx = 0
 
 def obtener_evento(step):
     eventos = [
@@ -129,6 +175,9 @@ if "desvios" not in st.session_state:
 if "confetti" not in st.session_state:
     st.session_state.confetti = False
 
+if "foto_idx" not in st.session_state:
+    st.session_state.foto_idx = 0
+
 # ========================
 # UI
 # ========================
@@ -161,12 +210,10 @@ elif st.session_state.pantalla == "juego":
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
 
-    # 👰 YASMINA
     mostrar_imagen("img/yasmina.png", 150)
 
     st.markdown("Tu objetivo:")
 
-    # 🏛️ ALTAR (DESTINO)
     mostrar_imagen("img/altar.png", 120)
 
     evento = obtener_evento(st.session_state.step)
@@ -229,10 +276,22 @@ elif st.session_state.pantalla == "win":
     tipo = ranking()
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
-    st.markdown(f"Has llegado al altar\n\nTipo de novia: **{tipo}**")
+
+    st.markdown(f"""
+    Has llegado al altar.
+
+    Tipo de novia: **{tipo}**
+
+    Aquí tienes vuestro resumen.
+    """)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    autoplay_audio("audio/musica.mp3")
+
+    st.markdown("### Vuestra vida")
+    carrusel_fotos()
 
     if st.button("Jugar otra vez"):
         reiniciar()
         st.rerun()
-
-    st.markdown('</div>', unsafe_allow_html=True)
