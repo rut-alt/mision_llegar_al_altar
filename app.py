@@ -41,7 +41,7 @@ AMIGAS = {
     },
     "andrea": {
         "img": "img/andrea.png",
-        "telefono": "346635288588",
+        "telefono": "34635288588",
         "historia": "Andrea te llama a última hora para decirte que no le convence el vestido. Te pierdes ayudando a Andrea, ya no te convence tampoco tu vestido y todo cambia.",
     },
 }
