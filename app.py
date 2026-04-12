@@ -212,10 +212,6 @@ elif st.session_state.pantalla == "juego":
 
     mostrar_imagen("img/yasmina.png", 150)
 
-    st.markdown("Tu objetivo:")
-
-    mostrar_imagen("img/altar.png", 120)
-
     evento = obtener_evento(st.session_state.step)
     st.markdown(evento["texto"])
 
