@@ -1,26 +1,29 @@
 import streamlit as st
 import random
+import os
 
 st.set_page_config(layout="centered")
 
 # CONFIG
-TOTAL_STEPS = 10  # pasos hasta el altar
+TOTAL_STEPS = 5
 
-AMIGAS = [
-    {"nombre": "Rut", "img": "img/rut.png", "msg": "😏 Sin mí no hay boda"},
-    {"nombre": "Marta", "img": "img/marta.png", "msg": "🔥 Drama máximo"},
-    {"nombre": "Lorena", "img": "img/lorena.png", "msg": "💅 Outfit urgente"},
-    {"nombre": "Leslie", "img": "img/leslie.png", "msg": "🍷 He abierto vino..."},
-    {"nombre": "Julia", "img": "img/julia.png", "msg": "📞 Llámame YA"},
-    {"nombre": "Andrea", "img": "img/andrea.png", "msg": "🚗 Estoy perdida"},
-]
+AMIGAS = {
+    "rut": {"img": "img/rut.png", "msg": "😏 Sin mí no hay boda"},
+    "marta": {"img": "img/marta.png", "msg": "🔥 Drama máximo"},
+    "lorena": {"img": "img/lorena.png", "msg": "💅 Outfit urgente"},
+    "leslie": {"img": "img/leslie.png", "msg": "🍷 He abierto vino..."},
+    "julia": {"img": "img/julia.png", "msg": "📞 Llámame YA"},
+    "andrea": {"img": "img/andrea.png", "msg": "🚗 Estoy perdida"},
+}
+
+# FUNCION IMAGEN SEGURA
+def mostrar_imagen(ruta, width=150):
+    if os.path.exists(ruta):
+        st.image(ruta, width=width)
 
 # INIT
 if "step" not in st.session_state:
     st.session_state.step = 0
-
-if "correct_door" not in st.session_state:
-    st.session_state.correct_door = random.randint(0, 2)
 
 if "game_over" not in st.session_state:
     st.session_state.game_over = False
@@ -28,63 +31,102 @@ if "game_over" not in st.session_state:
 if "win" not in st.session_state:
     st.session_state.win = False
 
-if "amiga_evento" not in st.session_state:
-    st.session_state.amiga_evento = None
+if "evento" not in st.session_state:
+    st.session_state.evento = None
 
 
 def reiniciar():
     st.session_state.step = 0
-    st.session_state.correct_door = random.randint(0, 2)
     st.session_state.game_over = False
     st.session_state.win = False
-    st.session_state.amiga_evento = None
+    st.session_state.evento = None
 
 
-def elegir_puerta(idx):
-    if idx == st.session_state.correct_door:
+# HISTORIA (aquí está la magia 🔥)
+def obtener_evento(step):
+    eventos = [
+        {
+            "texto": "⏰ Yasmina se despierta tarde el día de su boda...",
+            "opciones": [
+                {"texto": "☕ Tomar café rápido", "resultado": "ok"},
+                {"texto": "📱 Mirar el móvil", "resultado": "rut"},
+            ],
+        },
+        {
+            "texto": "🚪 Suena el teléfono… es alguien insistiendo",
+            "opciones": [
+                {"texto": "❌ Ignorar llamada", "resultado": "ok"},
+                {"texto": "📞 Contestar", "resultado": "julia"},
+            ],
+        },
+        {
+            "texto": "👗 Duda con el vestido...",
+            "opciones": [
+                {"texto": "👗 Elegir el que ya tenía", "resultado": "ok"},
+                {"texto": "💅 Pedir opinión", "resultado": "lorena"},
+            ],
+        },
+        {
+            "texto": "🚗 Camino al altar...",
+            "opciones": [
+                {"texto": "🚀 Ir directa", "resultado": "ok"},
+                {"texto": "📍 Parar a ayudar", "resultado": "andrea"},
+            ],
+        },
+        {
+            "texto": "🍷 Aparece una tentación final...",
+            "opciones": [
+                {"texto": "💒 Seguir al altar", "resultado": "ok"},
+                {"texto": "🍷 Tomar una copa", "resultado": "leslie"},
+            ],
+        },
+    ]
+
+    return eventos[step]
+
+
+def elegir(opcion):
+    if opcion == "ok":
         st.session_state.step += 1
 
         if st.session_state.step >= TOTAL_STEPS:
             st.session_state.win = True
-        else:
-            st.session_state.correct_door = random.randint(0, 2)
     else:
         st.session_state.game_over = True
-        st.session_state.amiga_evento = random.choice(AMIGAS)
+        st.session_state.evento = opcion
 
 
 # UI
-st.title("💍 NO ABRAS LA PUERTA EQUIVOCADA")
+st.title("💍 ELIGE TU DESTINO")
 
 # PROGRESO
 progreso = st.session_state.step / TOTAL_STEPS
 st.progress(progreso)
-
 st.markdown(f"### 🏃‍♀️ Progreso: {st.session_state.step}/{TOTAL_STEPS}")
 
 # NOVIA
-st.image("img/yasmina.png", width=120)
+mostrar_imagen("img/yasmina.png", 120)
 
-st.markdown("## 🚪 Elige una puerta")
+# GAME
+if not st.session_state.game_over and not st.session_state.win:
+    evento = obtener_evento(st.session_state.step)
 
-col1, col2, col3 = st.columns(3)
+    st.markdown(f"## {evento['texto']}")
 
-for i, col in enumerate([col1, col2, col3]):
-    with col:
-        if st.button(f"🚪 Puerta {i+1}", use_container_width=True):
-            if not st.session_state.game_over and not st.session_state.win:
-                elegir_puerta(i)
-                st.rerun()
+    for opcion in evento["opciones"]:
+        if st.button(opcion["texto"], use_container_width=True):
+            elegir(opcion["resultado"])
+            st.rerun()
 
 
 # GAME OVER
 if st.session_state.game_over:
-    amiga = st.session_state.amiga_evento
+    amiga = AMIGAS[st.session_state.evento]
 
     st.markdown("---")
-    st.error(f"💥 TE HAS ENCONTRADO CON {amiga['nombre'].upper()}")
+    st.error("💥 TE HAN LIADO... NO LLEGAS AL ALTAR")
 
-    st.image(amiga["img"], width=150)
+    mostrar_imagen(amiga["img"])
     st.markdown(f"### {amiga['msg']}")
 
     if st.button("💔 Intentar otra vez", use_container_width=True):
@@ -95,7 +137,7 @@ if st.session_state.game_over:
 # WIN
 if st.session_state.win:
     st.markdown("---")
-    st.success("💒 ¡HAS LLEGADO AL ALTAR SIN SER INTERCEPTADA!")
+    st.success("💒 ¡HAS LLEGADO AL ALTAR SIN DISTRACCIONES!")
 
     if st.button("🔁 Jugar otra vez", use_container_width=True):
         reiniciar()
