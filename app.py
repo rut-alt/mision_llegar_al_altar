@@ -3,7 +3,7 @@ import os
 import urllib.parse
 import base64
 import glob
-import time
+import re
 
 st.set_page_config(layout="centered")
 
@@ -71,22 +71,45 @@ def autoplay_audio(file_path):
             b64 = base64.b64encode(data).decode()
 
         md = f"""
-        <audio autoplay loop>
+        <audio autoplay loop id="audioPlayer">
         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
         </audio>
+
+        <script>
+        document.addEventListener('click', function() {{
+            var audio = document.getElementById("audioPlayer");
+            if(audio){{
+                audio.play().catch(() => {{}});
+            }}
+        }});
+        </script>
         """
         st.markdown(md, unsafe_allow_html=True)
 
+# CARRUSEL
 def carrusel_fotos():
-    fotos = sorted(glob.glob("img/foto*.png"))
+    fotos = glob.glob("img/foto*.png")
+
+    def ordenar(f):
+        return int(re.findall(r'\d+', f)[0])
+
+    fotos = sorted(fotos, key=ordenar)
+
+    if "foto_idx" not in st.session_state:
+        st.session_state.foto_idx = 0
 
     if fotos:
-        placeholder = st.empty()
+        st.image(fotos[st.session_state.foto_idx], use_column_width=True)
 
-        for foto in fotos:
-            with placeholder.container():
-                st.image(foto, use_column_width=True)
-            time.sleep(2)
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if st.button("⬅️"):
+                st.session_state.foto_idx = (st.session_state.foto_idx - 1) % len(fotos)
+
+        with col2:
+            if st.button("➡️"):
+                st.session_state.foto_idx = (st.session_state.foto_idx + 1) % len(fotos)
 
 def reiniciar():
     st.session_state.pantalla = "juego"
@@ -94,6 +117,7 @@ def reiniciar():
     st.session_state.evento = None
     st.session_state.valoracion = None
     st.session_state.desvios = []
+    st.session_state.foto_idx = 0
 
 def obtener_evento(step):
     eventos = [
@@ -144,6 +168,9 @@ if "valoracion" not in st.session_state:
 
 if "desvios" not in st.session_state:
     st.session_state.desvios = []
+
+if "foto_idx" not in st.session_state:
+    st.session_state.foto_idx = 0
 
 # ========================
 # UI
@@ -249,12 +276,11 @@ elif st.session_state.pantalla == "win":
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # música
+    # 🔊 MÚSICA AUTOMÁTICA AL GANAR
     autoplay_audio("audio/musica.mp3")
 
     st.markdown("### Vuestra vida")
 
-    # carrusel
     carrusel_fotos()
 
     if st.button("Jugar otra vez"):
