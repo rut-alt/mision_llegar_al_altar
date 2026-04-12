@@ -13,7 +13,7 @@ AMIGAS = {
     "rut": {
         "img": "img/rut.png",
         "telefono": "34600000001",
-        "historia": "Te vas a México en horas. Todo es impulsivo y sin control.",
+        "historia": "Te vas a México en horas. Le ha saltado una notificación de vuelos por menos de 300€ y ha codigo uno para cada una. Se le ha olvidado pillar la vuelte, qué le vamos a hacer? Abrís un puesto de quesadillas en la playa y nunca regresáis a España. Tenéis una nueva nacionalidad.",
     },
     "marta": {
         "img": "img/marta.png",
