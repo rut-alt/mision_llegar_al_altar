@@ -15,22 +15,22 @@ TOTAL_STEPS = 6
 
 AMIGAS = {
     "rut": {
-        "img": "img/rut.png",
+        "img": "img/mexico1.png",
         "telefono": "34663413206",
-        "historia": "Te vas a México en horas. Ha encontrado vuelos por menos de 300€ y ha codigo uno para cada una. Todo es impulsivo y sin control. Ha cogido solo billetes de ida. No tenéis dinero para volver a España y montáis un puesto de quesadillas en una playa.",
+        "historia": "¿Para qué miras el móvil? Te vas a México en horas. Rut ha encontrado vuelos por menos de 300€ y ha cogido uno para cada una. Todo es impulsivo y sin control. Con las prisas, ha cogido solo billetes de ida. No tenéis dinero para volver a España y montáis un puesto de quesadillas en una playa.",
     },
     "marta": {
-        "img": "img/marta.png",
+        "img": "img/gatos1.png",
         "telefono": "34655068171",
-        "historia": "Marta te ha pedido que vayas a darle de comer a los gatos. Acabas metida en un caos con gatos que no termina nunca. Pero la cosa es que te gusta, terminas convirtiendote en la mamá de los gatos de Marta y decides no casarte.",
+        "historia": "Marta te ha pedido que vayas a darle de comer a los gatos. Acabas metida en un caos gatuno que no termina nunca. Pero la cosa es que te gusta, terminas convirtiendote en mamá de gatos como Marta y decides no casarte, total, estos son mas peluditos.",
     },
     "lorena": {
-        "img": "img/lorena.png",
+        "img": "img/uber1.png",
         "telefono": "34676097913",
-        "historia": "Lori te pide que vayas a recogerla a Atocha porque , porqué iba a gastar ella dinero en pedir un uber? No la encuentras, tus nociones de encontrar pasajeros en las estaciones se han esfumado y te quedas dando vueltas en bucle por Atocha.",
+        "historia": "Lori te pide que vayas a recogerla a Atocha porque, por qué iba a gastar ella dinero en pedir un uber? No la encuentras, tus nociones de encontrar pasajeros en las estaciones se han esfumado y te quedas dando vueltas en bucle por Atocha. No llegas al altar.",
     },
     "leslie": {
-        "img": "img/leslie.png",
+        "img": "img/matcha1.png",
         "telefono": "34688422600",
         "historia": "Te encuentras con Leslie en una cafetería tomando un matcha y pides otro. Una cosa lleva a la otra y esos matchas se convierten en copas . Una copa lleva a otra y el plan cambia por completo. Nunca llegas a la boda.",
     },
@@ -132,7 +132,7 @@ def reiniciar():
 
 def obtener_evento(step):
     eventos = [
-        {"texto": "Empieza el día y lo primero que haces es.", "ok": "Tomar un café", "bad": "Mirar el móvil"},
+        {"texto": "Hoy todo cambia. Empieza el día de tu boda y lo primero que haces es.", "ok": "Tomar un café", "bad": "Mirar el móvil"},
         {"texto": "Algo interrumpe, Marta necesita que vayas a dar de comer a los gatos.", "ok": "Decirle que no tienes tiempo", "bad": "Ir a dar de comer a los gatos"},
         {"texto": "Lorena te llama para que la recojas.", "ok": "Que se pida un Uber", "bad": "Ir a recogerla."},
         {"texto": "Ves a alguien familiar en una cafetería.", "ok": "Ignorar", "bad": "Entrar a mirar quién es."},
@@ -196,13 +196,13 @@ if st.session_state.pantalla == "inicio":
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
     st.markdown("""
+    Hola, sabemos que dentro de poco serás una mujer casada, pero tus amigas no van a ponertelo nada fácil.Intenta llegar al altar.
     Tendrás que tomar decisiones sin saber qué pasará.
+    Si te desvías, tendrás otra historia. Solo tú eres dueña de tu destino.
+    ¿Ayudarás a tus amigas? ¿Son realmente tu prioridad?
+    Suerte en este pequeño viaje.
+    Envía captura a cada amiga diciendo si te habría gustado tu vida en un universo paralelo creado con cada decisión tomada.
 
-    Si te desvías, tendrás otra historia.
-
-    Envía captura a cada amiga diciendo si te habría gustado esa vida.
-
-    Luego intenta llegar al altar.
     """)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -287,6 +287,8 @@ elif st.session_state.pantalla == "win":
     Tipo de novia: **{tipo}**
 
     Aquí tienes vuestro resumen.
+    NO CIERRES ESTA PANTALLA.
+    ESPERA QUE CARGUE Y DISFRUTA! 
     """)
 
     st.markdown('</div>', unsafe_allow_html=True)
