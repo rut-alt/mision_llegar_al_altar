@@ -15,22 +15,22 @@ TOTAL_STEPS = 6
 
 AMIGAS = {
     "rut": {
-        "img": "img/mexico1.png",
+        "img": "img/mexico1.jpeg",
         "telefono": "34663413206",
         "historia": "¿Para qué miras el móvil? Te vas a México en horas. Rut ha encontrado vuelos por menos de 300€ y ha cogido uno para cada una. Todo es impulsivo y sin control. Con las prisas, ha cogido solo billetes de ida. No tenéis dinero para volver a España y montáis un puesto de quesadillas en una playa.",
     },
     "marta": {
-        "img": "img/gatos1.png",
+        "img": "img/gatos1.jpeg",
         "telefono": "34655068171",
         "historia": "Marta te ha pedido que vayas a darle de comer a los gatos. Acabas metida en un caos gatuno que no termina nunca. Pero la cosa es que te gusta, terminas convirtiendote en mamá de gatos como Marta y decides no casarte, total, estos son mas peluditos.",
     },
     "lorena": {
-        "img": "img/uber1.png",
+        "img": "img/uber1.jpeg",
         "telefono": "34676097913",
         "historia": "Lori te pide que vayas a recogerla a Atocha porque, por qué iba a gastar ella dinero en pedir un uber? No la encuentras, tus nociones de encontrar pasajeros en las estaciones se han esfumado y te quedas dando vueltas en bucle por Atocha. No llegas al altar.",
     },
     "leslie": {
-        "img": "img/matcha1.png",
+        "img": "img/matcha1.jpeg",
         "telefono": "34688422600",
         "historia": "Te encuentras con Leslie en una cafetería tomando un matcha y pides otro. Una cosa lleva a la otra y esos matchas se convierten en copas . Una copa lleva a otra y el plan cambia por completo. Nunca llegas a la boda.",
     },
