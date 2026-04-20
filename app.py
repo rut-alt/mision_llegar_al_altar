@@ -91,8 +91,6 @@ def autoplay_audio(file_path):
         """, unsafe_allow_html=True)
 
 def carrusel_fotos():
-
-    # 🔄 SPINNER
     with st.spinner("Cargando recuerdos..."):
         fotos = glob.glob("img/foto*.png")
 
@@ -139,6 +137,10 @@ def obtener_evento(step):
         {"texto": "Llamada de Julia, que querrá?", "ok": "Cualego. Son eternas, ni loca.", "bad": "Veamos qué quiere, mis amigas, mi prioridad."},
         {"texto": "Último momento, llamada de Andrea, esto en serio?", "ok": "Colgar, no es tan urgente como mi boda", "bad": "Ver qué quiere, la quiero demasiado."},
     ]
+
+    if step >= len(eventos):
+        return eventos[-1]
+
     return eventos[step]
 
 def elegir(resultado, amiga=None):
@@ -197,16 +199,12 @@ if st.session_state.pantalla == "inicio":
     st.markdown('<div class="block text">', unsafe_allow_html=True)
     st.markdown("""
     Hola, sabemos que dentro de poco serás una mujer casada, pero tus amigas no van a ponertelo nada fácil.Intenta llegar al altar.
-    
-     Tendrás que tomar decisiones sin saber qué pasará.
-     
-     Si te desvías, tendrás otra historia. Solo tú eres dueña de tu destino.
-     
+    Tendrás que tomar decisiones sin saber qué pasará.
+    Si te desvías, tendrás otra historia. Solo tú eres dueña de tu destino.
     ¿Ayudarás a tus amigas? ¿Son realmente tu prioridad?
-    
-    Suerte en este pequeño viaje. 
-    Envía captura a cada amiga diciendo si te habría gustado tu vida en un universo paralelo creado con cada decisión tomada.
+    Suerte en este pequeño viaje.
 
+    Envía captura a cada amiga diciendo si te habría gustado tu vida en un universo paralelo creado con cada decisión tomada.
     """)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -217,6 +215,10 @@ if st.session_state.pantalla == "inicio":
 # JUEGO
 elif st.session_state.pantalla == "juego":
 
+    if st.session_state.step >= TOTAL_STEPS:
+        st.session_state.pantalla = "win"
+        st.rerun()
+
     progreso = max(0.0, min(1.0, st.session_state.step / TOTAL_STEPS))
     st.progress(progreso)
 
@@ -224,11 +226,7 @@ elif st.session_state.pantalla == "juego":
 
     mostrar_imagen("img/yasmina.png", 150)
 
-    if st.session_state.step >= TOTAL_STEPS:
-    st.session_state.pantalla = "win"
-    st.rerun()
-
-evento = obtener_evento(st.session_state.step)
+    evento = obtener_evento(st.session_state.step)
     st.markdown(evento["texto"])
 
     st.markdown('</div>', unsafe_allow_html=True)
@@ -238,7 +236,14 @@ evento = obtener_evento(st.session_state.step)
         st.rerun()
 
     if st.button(evento["bad"], use_container_width=True):
-        amiga = list(AMIGAS.keys())[st.session_state.step]
+
+        amigas_keys = list(AMIGAS.keys())
+
+        if st.session_state.step < len(amigas_keys):
+            amiga = amigas_keys[st.session_state.step]
+        else:
+            amiga = amigas_keys[-1]
+
         elegir("bad", amiga)
         st.rerun()
 
@@ -288,17 +293,13 @@ elif st.session_state.pantalla == "win":
     tipo = ranking()
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
-
     st.markdown(f"""
     Has llegado al altar.
-
     Tipo de novia: **{tipo}**
-
     Aquí tienes vuestro resumen.
     NO CIERRES ESTA PANTALLA.
-    ESPERA QUE CARGUE Y DISFRUTA! 
+    ESPERA QUE CARGUE Y DISFRUTA!
     """)
-
     st.markdown('</div>', unsafe_allow_html=True)
 
     autoplay_audio("audio/musica.mp3")
