@@ -22,27 +22,27 @@ AMIGAS = {
     "marta": {
         "img": "img/gatos1.jpeg",
         "telefono": "34655068171",
-        "historia": "Marta te ha pedido que vayas a darle de comer a los gatos. Acabas metida en un caos gatuno que no termina nunca. Pero la cosa es que te gusta, terminas convirtiendote en mamá de gatos como Marta y decides no casarte, total, estos son mas peluditos.",
+        "historia": "Vaya decisiones estás tomando...Marta te ha pedido que vayas a darle de comer a los gatos. Acabas metida en un caos gatuno que no termina nunca. Pero la cosa es que te gusta, terminas convirtiendote en mamá de gatos como Marta y decides no casarte, total, estos son mas peluditos.",
     },
     "lorena": {
         "img": "img/uber1.jpeg",
         "telefono": "34676097913",
-        "historia": "Lori te pide que vayas a recogerla a Atocha porque, por qué iba a gastar ella dinero en pedir un uber? No la encuentras, tus nociones de encontrar pasajeros en las estaciones se han esfumado y te quedas dando vueltas en bucle por Atocha. No llegas al altar.",
+        "historia": "Lori te pide que vayas a recogerla a Atocha porque, por qué iba a gastar ella dinero en pedir un uber? No la encuentras, tus nociones de encontrar pasajeros en las estaciones se han esfumado y te quedas dando vueltas en bucle por Atocha. No llegas al altar, pero tienes una amiga para toda la eternidad.",
     },
     "leslie": {
         "img": "img/matcha1.jpeg",
         "telefono": "34688422600",
-        "historia": "Te encuentras con Leslie en una cafetería tomando un matcha y pides otro. Una cosa lleva a la otra y esos matchas se convierten en copas . Una copa lleva a otra y el plan cambia por completo. Nunca llegas a la boda.",
+        "historia": "Te encuentras con Leslie en una cafetería tomando un matcha y pides otro. Una cosa lleva a la otra y esos matchas se convierten en copas . Una copa lleva a otra y el plan cambia por completo. Nunca llegas a la boda pero muy bien por elegir de nuevo a tus amigas.",
     },
     "julia": {
         "img": "img/julia.png",
         "telefono": "34615853540",
-        "historia": "Julia te llama por telefono para pedirte opinión sobre algot. Cuando empiezas a hablar con Julia, sabes cuándo empieza pero nunca cuándo acaba. La conversación se alarga más de lo esperado y nunca llegas al altar.",
+        "historia": "Julia te llama por telefono para pedirte opinión sobre algo. Cuando empiezas a hablar con Julia, sabes cuándo empieza pero nunca cuándo acaba. La conversación se alarga más de lo esperado y nunca llegas al altar. No te casas pero has prioridado de nuevo la amistad :)",
     },
     "andrea": {
         "img": "img/andrea.png",
         "telefono": "34635288588",
-        "historia": "Andrea te llama a última hora para decirte que no le convence el vestido. Te pierdes ayudando a Andrea, ya no te convence tampoco tu vestido y todo cambia.",
+        "historia": "Andrea te llama a última hora para decirte que no le convence el vestido. Te pierdes ayudando a Andrea, ya no te convence tampoco tu vestido y todo cambia. Andrea te dice que sin un vestido que le guste no va a la boda, y tu le dices que sin ella tampoco irás a la boda.",
     },
 }
 
@@ -136,8 +136,8 @@ def obtener_evento(step):
         {"texto": "Algo interrumpe, Marta necesita que vayas a dar de comer a los gatos.", "ok": "Decirle que no tienes tiempo, me caso hoy ¿sabes?", "bad": "Ir a dar de comer a los gatos, lo primero es lo primero."},
         {"texto": "Lorena te llama para que la recojas. Menuda novedad.", "ok": "Que se pida un Uber, de qué va?", "bad": "Ir a recogerla. Mi boda puede esperar, mi cabrón no."},
         {"texto": "Ves a alguien familiar en una cafetería, qué intriga!.", "ok": "Ignorar, no más imprevistos por hoy", "bad": "Entrar a mirar quién es, total, no puede ser otra amiga lianta."},
-        {"texto": "Llamada de Julia, que querrá?", "ok": "Cualego. Son eternas, ni loca.", "bad": "Veamos qué quiere."},
-        {"texto": "Último momento, llamada de Andrea.", "ok": "Colgar, no es tan urgente", "bad": "Ver qué quiere."},
+        {"texto": "Llamada de Julia, que querrá?", "ok": "Cualego. Son eternas, ni loca.", "bad": "Veamos qué quiere, mis amigas, mi prioridad."},
+        {"texto": "Último momento, llamada de Andrea, esto en serio?", "ok": "Colgar, no es tan urgente como mi boda", "bad": "Ver qué quiere, la quiero demasiado."},
     ]
     return eventos[step]
 
