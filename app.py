@@ -198,13 +198,13 @@ if st.session_state.pantalla == "inicio":
 
     st.markdown('<div class="block text">', unsafe_allow_html=True)
     st.markdown("""
-    Hola, sabemos que dentro de poco serás una mujer casada, pero tus amigas no van a ponertelo nada fácil.Intenta llegar al altar.
+    Hola, sabemos que dentro de poco serás una mujer casada, pero tus amigas no van a ponertelo nada fácil así que intenta llegar al altar.
     Tendrás que tomar decisiones sin saber qué pasará.
     Si te desvías, tendrás otra historia. Solo tú eres dueña de tu destino.
     ¿Ayudarás a tus amigas? ¿Son realmente tu prioridad?
     Suerte en este pequeño viaje.
 
-    Envía captura a cada amiga diciendo si te habría gustado tu vida en un universo paralelo creado con cada decisión tomada.
+    Envía captura a cada amiga diciendo si te habría gustado tu vida en un universo paralelo creado con cada decisión tomada. Mucha suerte!
     """)
     st.markdown('</div>', unsafe_allow_html=True)
 
