@@ -37,7 +37,7 @@ AMIGAS = {
     "julia": {
         "img": "img/julia.png",
         "telefono": "34615853540",
-        "historia": "Julia te llama por telefono para pedirte opinión sobre algo. Cuando empiezas a hablar con Julia, sabes cuándo empieza pero nunca cuándo acaba. La conversación se alarga más de lo esperado y nunca llegas al altar. No te casas pero has prioridado de nuevo la amistad :)",
+        "historia": "Julia te llama por telefono para pedirte opinión sobre algo. Cuando empiezas a hablar con Julia, sabes cuándo empieza pero nunca cuándo acaba. La conversación se alarga más de lo esperado y nunca llegas al altar. No te casas pero has priorizado de nuevo la amistad :)",
     },
     "andrea": {
         "img": "img/andrea.png",
