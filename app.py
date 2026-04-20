@@ -298,7 +298,7 @@ elif st.session_state.pantalla == "win":
     Tipo de novia: **{tipo}**
     Aquí tienes vuestro resumen.
     NO CIERRES ESTA PANTALLA.
-    ESPERA QUE CARGUE Y DISFRUTA!
+    ACTIVA EL SONIDO, ESPERA QUE CARGUE Y DISFRUTA!
     """)
     st.markdown('</div>', unsafe_allow_html=True)
 
