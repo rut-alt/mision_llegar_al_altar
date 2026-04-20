@@ -35,12 +35,12 @@ AMIGAS = {
         "historia": "Te encuentras con Leslie en una cafetería tomando un matcha y pides otro. Una cosa lleva a la otra y esos matchas se convierten en copas . Una copa lleva a otra y el plan cambia por completo. Nunca llegas a la boda pero muy bien por elegir de nuevo a tus amigas.",
     },
     "julia": {
-        "img": "img/julia.png",
+        "img": "img/juliallamada.jpg",
         "telefono": "34615853540",
         "historia": "Julia te llama por telefono para pedirte opinión sobre algo. Cuando empiezas a hablar con Julia, sabes cuándo empieza pero nunca cuándo acaba. La conversación se alarga más de lo esperado y nunca llegas al altar. No te casas pero has priorizado de nuevo la amistad :)",
     },
     "andrea": {
-        "img": "img/andrea.png",
+        "img": "img/andreavestidos.jpg",
         "telefono": "34635288588",
         "historia": "Andrea te llama a última hora para decirte que no le convence el vestido. Te pierdes ayudando a Andrea, ya no te convence tampoco tu vestido y todo cambia. Andrea te dice que sin un vestido que le guste no va a la boda, y tu le dices que sin ella tampoco irás a la boda.",
     },
