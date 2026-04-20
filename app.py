@@ -224,7 +224,11 @@ elif st.session_state.pantalla == "juego":
 
     mostrar_imagen("img/yasmina.png", 150)
 
-    evento = obtener_evento(st.session_state.step)
+    if st.session_state.step >= TOTAL_STEPS:
+    st.session_state.pantalla = "win"
+    st.rerun()
+
+evento = obtener_evento(st.session_state.step)
     st.markdown(evento["texto"])
 
     st.markdown('</div>', unsafe_allow_html=True)
